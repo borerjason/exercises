@@ -7,10 +7,13 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "js/[name].js"
   },
+  resolve: {
+    extensions: [' ', '.js', '.jsx'],
+  },
   module: {
     rules: [
       {
-        test:/\.js$/,
+        test:/\.js#/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader"
