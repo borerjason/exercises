@@ -1,1 +1,1 @@
-# react-starter
+# exercises
