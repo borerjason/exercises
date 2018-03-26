@@ -1,5 +1,8 @@
 // import reducers here
 
-export default {
+export default function() {
   // add all reducers here...
+  return {
+    
+  }
 };
