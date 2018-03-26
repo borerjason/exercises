@@ -1,10 +1,10 @@
 {
-  "name": "reactScratch",
+  "name": "excercises",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-dev": "nodemon ./src/js/server", 
+    "start-dev": "nodemon ./src/server", 
     "test": "jest",
     "build": "webpack",
     "build-dev": "webpack -w"
