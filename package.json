@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "immutable": "^3.8.2",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
     "reselect": "^3.0.1"
   }
 }
