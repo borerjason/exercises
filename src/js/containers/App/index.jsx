@@ -2,10 +2,12 @@ import React from 'react';
 
 import Header from '../../components/Header';
 
-const app = (props) => {
+const App = () => {
   return (
-    <Header />
+    <div>
+      <Header />
+    </div>
   );
 };
 
-export default app;
+export default App;

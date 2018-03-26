@@ -21181,11 +21181,15 @@ var _Header2 = _interopRequireDefault(_Header);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = function app(props) {
-  return _react2.default.createElement(_Header2.default, null);
+var App = function App() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_Header2.default, null)
+  );
 };
 
-exports.default = app;
+exports.default = App;
 
 /***/ }),
 /* 70 */
