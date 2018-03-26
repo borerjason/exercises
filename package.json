@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-dev": "nodemon ./src/server", 
+    "start-dev": "nodemon ./src/server",
     "test": "jest",
     "build": "webpack",
     "build-dev": "webpack -w"
@@ -33,6 +33,7 @@
     "path": "^0.12.7",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "styled-components": "^3.2.3"
   }
 }
