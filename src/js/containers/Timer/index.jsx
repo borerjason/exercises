@@ -5,40 +5,63 @@ class Timer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      setsLeft: this.props.setsLeft,
-      time: this.props.duration,
+      buffer: false,
     };
 
-    this.handleClickStart = this.handleClickStart.bind(this);
-    this.decrementTimer = this.decrementTimer.bind(this);
+    this.handleStartExercise = this.handleStartExercise.bind(this);
+    this.timer = this.timer.bind(this);
+    // this.decrementTimer = this.decrementTimer.bind(this);
+  }
+  componentDidMount() {
+    console.log('mounted', this.props, this.state);
   }
 
-  handleClickStart(e) {
+  handleStartExercise(e) {
     e.preventDefault();
-    setInterval(this.decrementTimer, 1000);
+    const { duration, sets } = this.props;
+    this.timer(sets, duration);
   }
 
-  decrementTimer() {
-    this.setState({ time: this.state.time - 1 });
+
+  timer(setsLeft, duration) {
+    const timer = setInterval(decrementTimer.bind(this), 1000);
+    function decrementTimer() {
+      if (this.state.time > 0) {
+        this.setState({ time: this.state.time - 1 });
+      } else {
+        clearInterval(timer);
+        if (!this.state.buffer) {
+          this.setState({ time: 2, buffer: true }, this.timer);
+        } else if (this.state.setsLeft > 0) {
+          this.setState({ time: this.props.duration, buffer: false }, this.timer);
+        } else {
+          console.log('DONE');
+          this.props.next();
+        }
+      }
+    }
   }
+
 
   render() {
-    console.log(this.props);
+    console.log('rendered', this.props, this.state);
     return (
     <div>
       <button
-        onClick={this.handleClickStart}
+        onClick={this.handleStartExercise}
       >start
       </button>
       <div>{this.state.time}</div>
+      <div>Sets Left: {this.state.setsLeft}</div>
     </div>
     );
   }
 }
 
 Timer.propTypes = {
-  setsLeft: PropTypes.number.isRequired,
+  sets: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
+  next: PropTypes.func.isRequired,
 };
 
 export default Timer;

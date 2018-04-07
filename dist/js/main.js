@@ -26567,8 +26567,10 @@ var Display = function (_React$Component) {
 
     _this.state = {
       exerciseIndex: 0,
-      setsLeft: _exercises2.default[0].sets
+      sets: _exercises2.default[0].sets
     };
+
+    _this.handleUpdateExerciseIndex = _this.handleUpdateExerciseIndex.bind(_this);
     return _this;
   }
 
@@ -26579,7 +26581,7 @@ var Display = function (_React$Component) {
       if (_exercises2.default[nextIndex]) {
         this.setState({
           exerciseIndex: nextIndex,
-          setsLeft: _exercises2.default[nextIndex].sets
+          sets: _exercises2.default[nextIndex].sets
         });
       }
     }
@@ -26588,13 +26590,14 @@ var Display = function (_React$Component) {
     value: function render() {
       var exerciseIndex = this.state.exerciseIndex;
 
-      console.log(_exercises2.default);
+      console.log(exerciseIndex);
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(_Timer2.default, {
           duration: _exercises2.default[exerciseIndex].duration,
-          setsLeft: this.state.setsLeft
+          sets: this.state.sets,
+          next: this.handleUpdateExerciseIndex
         }),
         _react2.default.createElement('div', null)
       );
@@ -26621,16 +26624,16 @@ module.exports = [{
   video: null,
   sets: 3,
   reps: null,
-  duration: 30
+  duration: 3
 }, {
   name: 'Glute Bridge',
   description: 'This is a desription about the glute bridge. Make sure that you’re moving at the hips and not the lower back.',
   muscles: 'hips',
   image: null,
   video: null,
-  sets: 3,
+  sets: 4,
   reps: 10,
-  duration: null
+  duration: 60
 }];
 
 /*
@@ -26685,37 +26688,61 @@ var Timer = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Timer.__proto__ || Object.getPrototypeOf(Timer)).call(this, props));
 
     _this.state = {
-      setsLeft: _this.props.setsLeft,
-      time: _this.props.duration
+      buffer: false
     };
 
-    _this.handleClickStart = _this.handleClickStart.bind(_this);
-    _this.decrementTimer = _this.decrementTimer.bind(_this);
+    _this.handleStartExercise = _this.handleStartExercise.bind(_this);
+    _this.timer = _this.timer.bind(_this);
+    // this.decrementTimer = this.decrementTimer.bind(this);
     return _this;
   }
 
   _createClass(Timer, [{
-    key: 'handleClickStart',
-    value: function handleClickStart(e) {
-      e.preventDefault();
-      setInterval(this.decrementTimer, 1000);
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      console.log('mounted', this.props, this.state);
     }
   }, {
-    key: 'decrementTimer',
-    value: function decrementTimer() {
-      this.setState({ time: this.state.time - 1 });
+    key: 'handleStartExercise',
+    value: function handleStartExercise(e) {
+      e.preventDefault();
+      var _props = this.props,
+          duration = _props.duration,
+          sets = _props.sets;
+
+      this.timer(sets, duration);
+    }
+  }, {
+    key: 'timer',
+    value: function timer(setsLeft, duration) {
+      var timer = setInterval(decrementTimer.bind(this), 1000);
+      function decrementTimer() {
+        if (this.state.time > 0) {
+          this.setState({ time: this.state.time - 1 });
+        } else {
+          clearInterval(timer);
+          if (!this.state.buffer) {
+            this.setState({ time: 2, buffer: true }, this.timer);
+          } else if (this.state.setsLeft > 0) {
+            this.setState({ time: this.props.duration, buffer: false }, this.timer);
+          } else {
+            console.log('DONE');
+            this.props.next();
+          }
+        }
+      }
     }
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.props);
+      console.log('rendered', this.props, this.state);
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'button',
           {
-            onClick: this.handleClickStart
+            onClick: this.handleStartExercise
           },
           'start'
         ),
@@ -26723,6 +26750,12 @@ var Timer = function (_React$Component) {
           'div',
           null,
           this.state.time
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          'Sets Left: ',
+          this.state.setsLeft
         )
       );
     }
@@ -26732,8 +26765,9 @@ var Timer = function (_React$Component) {
 }(_react2.default.Component);
 
 Timer.propTypes = {
-  setsLeft: _propTypes2.default.number.isRequired,
-  duration: _propTypes2.default.number.isRequired
+  sets: _propTypes2.default.number.isRequired,
+  duration: _propTypes2.default.number.isRequired,
+  next: _propTypes2.default.func.isRequired
 };
 
 exports.default = Timer;

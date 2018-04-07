@@ -7,7 +7,7 @@ module.exports = [
     video: null,
     sets: 3,
     reps: null,
-    duration: 30,
+    duration: 3,
   },
   {
     name: 'Glute Bridge',
@@ -15,9 +15,9 @@ module.exports = [
     muscles: 'hips',
     image: null,
     video: null,
-    sets: 3,
+    sets: 4,
     reps: 10,
-    duration: null,
+    duration: 60,
   },
 ];
 

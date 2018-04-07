@@ -8,8 +8,10 @@ class Display extends React.Component {
     super(props);
     this.state = {
       exerciseIndex: 0,
-      setsLeft: exercises[0].sets,
+      sets: exercises[0].sets,
     };
+
+    this.handleUpdateExerciseIndex = this.handleUpdateExerciseIndex.bind(this);
   }
 
   handleUpdateExerciseIndex() {
@@ -17,18 +19,19 @@ class Display extends React.Component {
     if (exercises[nextIndex]) {
       this.setState({
         exerciseIndex: nextIndex,
-        setsLeft: exercises[nextIndex].sets,
+        sets: exercises[nextIndex].sets,
       });
     }
   }
   render() {
     const { exerciseIndex } = this.state;
-    console.log(exercises);
+    console.log(exerciseIndex);
     return (
       <div>
         <Timer
           duration={exercises[exerciseIndex].duration}
-          setsLeft={this.state.setsLeft}
+          sets={this.state.sets}
+          next={this.handleUpdateExerciseIndex}
         />
         <div></div>
       </div>
