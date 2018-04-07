@@ -1,5 +1,5 @@
 module.exports = [
-  { 
+  {
     name: 'Lunge Stretch',
     description: 'This is a desription about the lunge stretch. Make sure that you’re moving at the hips and not the lower back.',
     muscles: 'hips',
@@ -8,8 +8,8 @@ module.exports = [
     sets: 3,
     reps: null,
     duration: 30,
-},
-  { 
+  },
+  {
     name: 'Glute Bridge',
     description: 'This is a desription about the glute bridge. Make sure that you’re moving at the hips and not the lower back.',
     muscles: 'hips',
@@ -17,12 +17,12 @@ module.exports = [
     video: null,
     sets: 3,
     reps: 10,
-    duration: null, 
-}
-]
+    duration: null,
+  },
+];
 
 
-/* 
+/*
 {
   name: String Name of exercise:
   muscles: String: target muscle
