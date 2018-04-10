@@ -1,9 +1,15 @@
 import * as actionTypes from './actionTypes';
 
-export default function storeExercises(exercises) {
-  console.log('excersices action', exercises);
+export function storeExercises(exercises) {
   return {
     type: actionTypes.STORE_EXERCISES,
     payload: { exercises },
+  };
+}
+
+export function updateCurrentExercise(currIndex) {
+  return {
+    type: actionTypes.UPDATE_EXERCISE,
+    payload: { currIndex },
   };
 }

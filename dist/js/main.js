@@ -1865,18 +1865,18 @@ module.exports = [{
   muscles: 'hips',
   image: null,
   video: null,
-  sets: 4,
+  sets: 2,
   reps: null,
-  duration: 7
+  duration: 3
 }, {
   name: 'Glute Bridge',
   description: 'This is a desription about the glute bridge. Make sure that you’re moving at the hips and not the lower back.',
   muscles: 'hips',
   image: null,
   video: null,
-  sets: 4,
+  sets: 2,
   reps: 10,
-  duration: 60
+  duration: 5
 }];
 
 /*
@@ -26587,23 +26587,31 @@ var Display = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Display.__proto__ || Object.getPrototypeOf(Display)).call(this, props));
 
     _this.state = {
-      exerciseIndex: 0,
-      active: true
+      exerciseIndex: 0
+      // active: true,
     };
 
-    _this.handleUpdateExerciseIndex = _this.handleUpdateExerciseIndex.bind(_this);
+    // this.handleUpdateExerciseIndex = this.handleUpdateExerciseIndex.bind(this);
+    _this.displayNextExercise = _this.displayNextExercise.bind(_this);
     return _this;
   }
 
+  // handleUpdateExerciseIndex() {
+  //   const nextIndex = this.state.exerciseIndex + 1;
+  //   if (this.props.exercises[nextIndex]) {
+  //     this.setState({
+  //       exerciseIndex: nextIndex,
+  //       sets: this.props.exercises[nextIndex].sets,
+  //     });
+  //   }
+  // }
+
   _createClass(Display, [{
-    key: 'handleUpdateExerciseIndex',
-    value: function handleUpdateExerciseIndex() {
-      var nextIndex = this.state.exerciseIndex + 1;
-      if (this.props.exercises[nextIndex]) {
-        this.setState({
-          exerciseIndex: nextIndex,
-          sets: this.props.exercises[nextIndex].sets
-        });
+    key: 'displayNextExercise',
+    value: function displayNextExercise() {
+      console.log('triggered');
+      if (this.state.exerciseIndex < this.props.exercises.length - 1) {
+        this.setState({ exerciseIndex: this.state.exerciseIndex + 1 });
       }
     }
   }, {
@@ -26616,10 +26624,15 @@ var Display = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
+        _react2.default.createElement(
+          'h3',
+          null,
+          exercises.all[exerciseIndex].name
+        ),
         _react2.default.createElement(_Timer2.default, {
-          duration: exercises[exerciseIndex].duration,
-          sets: exercises[exerciseIndex].sets,
-          next: this.handleUpdateExerciseIndex
+          duration: exercises.all[exerciseIndex].duration,
+          sets: exercises.all[exerciseIndex].sets,
+          next: this.displayNextExercise
         })
       );
     }
@@ -26655,6 +26668,10 @@ var _propTypes = __webpack_require__(5);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _reactRedux = __webpack_require__(17);
+
+var _action = __webpack_require__(83);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26674,10 +26691,10 @@ var Timer = function (_React$Component) {
     _this.state = {
       buffer: false,
       time: _this.props.duration,
-      setsLeft: _this.props.sets
+      setsLeft: _this.props.sets,
+      isActive: false
     };
 
-    _this.handleStartExercise = _this.handleStartExercise.bind(_this);
     _this.timer = _this.timer.bind(_this);
     return _this;
   }
@@ -26685,23 +26702,36 @@ var Timer = function (_React$Component) {
   _createClass(Timer, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      console.log('trigger in CDM');
       this.timer();
     }
+
+    /* eslint-disable */
+
   }, {
     key: 'timer',
     value: function timer() {
       var timer = setInterval(decrementTimer.bind(this), 1000);
       function decrementTimer() {
         if (this.state.time > 0) {
-          this.setState({ time: this.state.time - 1 });
+          this.setState({ time: this.state.time - 1, isActive: true });
         } else {
           clearInterval(timer);
           if (!this.state.buffer) {
-            this.setState({ time: 5, buffer: true }, this.timer);
+            this.setState({ time: 1, buffer: true }, this.timer);
           } else if (this.state.setsLeft > 0) {
             this.setState({ time: this.props.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
           } else {
-            this.props.next();
+            if (this.props.exercises.currIndex < this.props.exercises.all.length - 1) {
+              this.props.updateCurrIndex(this.props.exercises.currIndex + 1);
+              // this.setState({
+              //   time: this.props.duration,
+              //   setsLeft: this.props.sets,
+              //   isActive: true,
+              // }, this.timer());
+            }
+
+            // this.props.next();
           }
         }
       }
@@ -26709,6 +26739,8 @@ var Timer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+
+      console.log('trigger in render', this.props);
       return _react2.default.createElement(
         'div',
         null,
@@ -26739,11 +26771,27 @@ var Timer = function (_React$Component) {
 
 Timer.propTypes = {
   sets: _propTypes2.default.number.isRequired,
-  duration: _propTypes2.default.number.isRequired,
-  next: _propTypes2.default.func.isRequired
+  duration: _propTypes2.default.number.isRequired
+  // next: PropTypes.func.isRequired,
 };
 
-exports.default = Timer;
+var mapStateToProps = function mapStateToProps(_ref) {
+  var exercises = _ref.exercises;
+  return { exercises: exercises };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    updateCurrIndex: function updateCurrIndex() {
+      dispatch((0, _action.updateCurrentExercise)());
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Timer);
+
+// have function here that upates the active exercise, then from the active exercise I can pull in the duration and the sets.
+// In my display function I can pull in active exercise and pull in name, description, etc.
 
 /***/ }),
 /* 79 */
@@ -26780,7 +26828,6 @@ exports.default = (0, _redux.combineReducers)({
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.initialState = undefined;
 exports.default = reducer;
 
 var _immutable = __webpack_require__(81);
@@ -26798,18 +26845,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 // do this later with selectors
-var initialState = exports.initialState = (0, _immutable.fromJS)({
-  exercises: _exercises2.default
-});
+// export const initialState = fromJS({
+//   exercises: dummyExercises,
+// });
+
+var initialState = { all: _exercises2.default, currIndex: 0 };
 
 function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _exercises2.default;
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments[1];
 
-  console.log(state);
+  console.log(state, action);
   switch (action.type) {
     case actionTypes.STORE_EXERCISES:
       return action.payload;
+    case actionTypes.UPDATE_EXERCISE:
+      return {
+        all: state.all,
+        currIndex: action.payload.currIndex
+      };
     default:
       return state;
   }
@@ -31808,6 +31862,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var STORE_EXERCISES = exports.STORE_EXERCISES = 'EXERCISES/STORE_EXERCISES';
+var UPDATE_EXERCISE = exports.UPDATE_EXERCISE = 'EXERCISES/UPDATE_EXERCISE';
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.storeExercises = storeExercises;
+exports.updateCurrentExercise = updateCurrentExercise;
+
+var _actionTypes = __webpack_require__(82);
+
+var actionTypes = _interopRequireWildcard(_actionTypes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function storeExercises(exercises) {
+  return {
+    type: actionTypes.STORE_EXERCISES,
+    payload: { exercises: exercises }
+  };
+}
+
+function updateCurrentExercise(currIndex) {
+  return {
+    type: actionTypes.UPDATE_EXERCISE,
+    payload: { currIndex: currIndex }
+  };
+}
 
 /***/ })
 /******/ ]);
