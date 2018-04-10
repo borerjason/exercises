@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Timer from '../Timer';
 
 class Display extends React.Component {
@@ -9,29 +10,9 @@ class Display extends React.Component {
       exerciseIndex: 0,
       // active: true,
     };
-
-    // this.handleUpdateExerciseIndex = this.handleUpdateExerciseIndex.bind(this);
-    this.displayNextExercise = this.displayNextExercise.bind(this);
-  }
-
-  // handleUpdateExerciseIndex() {
-  //   const nextIndex = this.state.exerciseIndex + 1;
-  //   if (this.props.exercises[nextIndex]) {
-  //     this.setState({
-  //       exerciseIndex: nextIndex,
-  //       sets: this.props.exercises[nextIndex].sets,
-  //     });
-  //   }
-  // }
-
-  displayNextExercise() {
-    if (this.state.exerciseIndex < this.props.exercises.length - 1) {
-      this.setState({ exerciseIndex: this.state.exerciseIndex + 1 });
-    }
   }
 
   render() {
-    console.log(this.props);
     const { exercises } = this.props;
     const { exerciseIndex } = this.state;
     return (
@@ -40,12 +21,16 @@ class Display extends React.Component {
         <Timer
           duration={exercises.all[exerciseIndex].duration}
           sets={exercises.all[exerciseIndex].sets}
-          next={this.displayNextExercise}
         />
+        <img alt="no-img" src={exercises.all[exercises.currIndex].image} />
       </div>
     );
   }
 }
+
+Display.propTypes = {
+  // exercises: PropTypes.isArray.isRequired,
+};
 
 
 const mapStateToProps = state =>

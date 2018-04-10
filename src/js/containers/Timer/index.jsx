@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { updateCurrentExercise } from '../../store/app/action';
+import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from './utils/timer';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -17,35 +18,29 @@ class Timer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('trigger in CDM');
     this.timer();
   }
 
   /* eslint-disable */
   timer() {
-    const timer = setInterval(decrementTimer.bind(this), 1000);
-    function decrementTimer() {
+    const timer = setInterval(runTimer.bind(this), 1000);
+    
+    function runTimer() {
       if (this.state.time > 0) {
-        this.setState({ time: this.state.time - 1 });
+        decrementTimeByOne.call(this);
       } else {
         clearInterval(timer);
         if (!this.state.buffer) {
-          this.setState({ time: 10, buffer: true }, this.timer);
+          startBuffer.call(this);
         } else if (this.state.setsLeft > 0) {
-          this.setState({ time: this.props.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
+          nextSet.call(this);
         } else {
-          if (this.props.exercises.currIndex < this.props.exercises.all.length - 1) {
-            const nextIndex = this.props.exercises.currIndex + 1
-            this.props.updateCurrIndex(nextIndex);
-            this.setState({
-              time: this.props.exercises.all[this.props.exercises.currIndex].duration,
-              setsLeft: this.props.exercises.all[this.props.exercises.currIndex].sets,
-            }, this.timer());
-          }
+          nextExercise.call(this);
         }
       }
     }
   }
+
 
   render() {
     return (
@@ -64,7 +59,6 @@ class Timer extends React.Component {
 Timer.propTypes = {
   sets: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
-  // next: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ exercises }) => (

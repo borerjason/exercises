@@ -3,7 +3,7 @@ module.exports = [
     name: 'Lunge Stretch',
     description: 'This is a desription about the lunge stretch. Make sure that you’re moving at the hips and not the lower back.',
     muscles: 'hips',
-    image: null,
+    image: 'https://i.ytimg.com/vi/dUgr_vjDWNw/maxresdefault.jpg',
     video: null,
     sets: 2,
     reps: null,

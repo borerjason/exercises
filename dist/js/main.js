@@ -1863,7 +1863,7 @@ module.exports = [{
   name: 'Lunge Stretch',
   description: 'This is a desription about the lunge stretch. Make sure that you’re moving at the hips and not the lower back.',
   muscles: 'hips',
-  image: null,
+  image: 'https://i.ytimg.com/vi/dUgr_vjDWNw/maxresdefault.jpg',
   video: null,
   sets: 2,
   reps: null,
@@ -26566,6 +26566,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(17);
 
+var _propTypes = __webpack_require__(5);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _Timer = __webpack_require__(78);
 
 var _Timer2 = _interopRequireDefault(_Timer);
@@ -26590,33 +26594,12 @@ var Display = function (_React$Component) {
       exerciseIndex: 0
       // active: true,
     };
-
-    // this.handleUpdateExerciseIndex = this.handleUpdateExerciseIndex.bind(this);
-    _this.displayNextExercise = _this.displayNextExercise.bind(_this);
     return _this;
   }
 
-  // handleUpdateExerciseIndex() {
-  //   const nextIndex = this.state.exerciseIndex + 1;
-  //   if (this.props.exercises[nextIndex]) {
-  //     this.setState({
-  //       exerciseIndex: nextIndex,
-  //       sets: this.props.exercises[nextIndex].sets,
-  //     });
-  //   }
-  // }
-
   _createClass(Display, [{
-    key: 'displayNextExercise',
-    value: function displayNextExercise() {
-      if (this.state.exerciseIndex < this.props.exercises.length - 1) {
-        this.setState({ exerciseIndex: this.state.exerciseIndex + 1 });
-      }
-    }
-  }, {
     key: 'render',
     value: function render() {
-      console.log(this.props);
       var exercises = this.props.exercises;
       var exerciseIndex = this.state.exerciseIndex;
 
@@ -26630,15 +26613,19 @@ var Display = function (_React$Component) {
         ),
         _react2.default.createElement(_Timer2.default, {
           duration: exercises.all[exerciseIndex].duration,
-          sets: exercises.all[exerciseIndex].sets,
-          next: this.displayNextExercise
-        })
+          sets: exercises.all[exerciseIndex].sets
+        }),
+        _react2.default.createElement('img', { alt: 'no-img', src: exercises.all[exercises.currIndex].image })
       );
     }
   }]);
 
   return Display;
 }(_react2.default.Component);
+
+Display.propTypes = {
+  // exercises: PropTypes.isArray.isRequired,
+};
 
 var mapStateToProps = function mapStateToProps(state) {
   return { exercises: state.exercises };
@@ -26671,6 +26658,8 @@ var _reactRedux = __webpack_require__(17);
 
 var _action = __webpack_require__(83);
 
+var _timer = __webpack_require__(84);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26700,7 +26689,6 @@ var Timer = function (_React$Component) {
   _createClass(Timer, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      console.log('trigger in CDM');
       this.timer();
     }
 
@@ -26709,25 +26697,19 @@ var Timer = function (_React$Component) {
   }, {
     key: 'timer',
     value: function timer() {
-      var timer = setInterval(decrementTimer.bind(this), 1000);
-      function decrementTimer() {
+      var timer = setInterval(runTimer.bind(this), 1000);
+
+      function runTimer() {
         if (this.state.time > 0) {
-          this.setState({ time: this.state.time - 1 });
+          _timer.decrementTimeByOne.call(this);
         } else {
           clearInterval(timer);
           if (!this.state.buffer) {
-            this.setState({ time: 10, buffer: true }, this.timer);
+            _timer.startBuffer.call(this);
           } else if (this.state.setsLeft > 0) {
-            this.setState({ time: this.props.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
+            _timer.nextSet.call(this);
           } else {
-            if (this.props.exercises.currIndex < this.props.exercises.all.length - 1) {
-              var nextIndex = this.props.exercises.currIndex + 1;
-              this.props.updateCurrIndex(nextIndex);
-              this.setState({
-                time: this.props.exercises.all[this.props.exercises.currIndex].duration,
-                setsLeft: this.props.exercises.all[this.props.exercises.currIndex].sets
-              }, this.timer());
-            }
+            _timer.nextExercise.call(this);
           }
         }
       }
@@ -26766,7 +26748,6 @@ var Timer = function (_React$Component) {
 Timer.propTypes = {
   sets: _propTypes2.default.number.isRequired,
   duration: _propTypes2.default.number.isRequired
-  // next: PropTypes.func.isRequired,
 };
 
 var mapStateToProps = function mapStateToProps(_ref) {
@@ -31890,6 +31871,48 @@ function updateCurrentExercise(currIndex) {
     type: actionTypes.UPDATE_EXERCISE,
     payload: { currIndex: currIndex }
   };
+}
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.decrementTimeByOne = decrementTimeByOne;
+exports.nextExercise = nextExercise;
+exports.nextSet = nextSet;
+exports.startBuffer = startBuffer;
+// logic for exercises
+
+// state
+
+function decrementTimeByOne() {
+  this.setState({ time: this.state.time - 1 });
+}
+
+function nextExercise() {
+  if (this.props.exercises.currIndex < this.props.exercises.all.length - 1) {
+    var nextIndex = this.props.exercises.currIndex + 1;
+    this.props.updateCurrIndex(nextIndex);
+    this.setState({
+      time: this.props.exercises.all[this.props.exercises.currIndex].duration,
+      setsLeft: this.props.exercises.all[this.props.exercises.currIndex].sets
+    }, this.timer());
+  }
+}
+
+function nextSet() {
+  var currExercise = this.props.exercises.all[this.props.exercises.currIndex];
+  this.setState({ time: currExercise.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
+}
+
+function startBuffer() {
+  this.setState({ time: 1, buffer: true }, this.timer);
 }
 
 /***/ })
