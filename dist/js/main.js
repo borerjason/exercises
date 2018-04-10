@@ -1865,9 +1865,9 @@ module.exports = [{
   muscles: 'hips',
   image: null,
   video: null,
-  sets: 3,
+  sets: 4,
   reps: null,
-  duration: 3
+  duration: 7
 }, {
   name: 'Glute Bridge',
   description: 'This is a desription about the glute bridge. Make sure that you’re moving at the hips and not the lower back.',
@@ -26566,10 +26566,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(17);
 
-var _exercises = __webpack_require__(28);
-
-var _exercises2 = _interopRequireDefault(_exercises);
-
 var _Timer = __webpack_require__(78);
 
 var _Timer2 = _interopRequireDefault(_Timer);
@@ -26592,7 +26588,6 @@ var Display = function (_React$Component) {
 
     _this.state = {
       exerciseIndex: 0,
-      sets: _exercises2.default[0].sets,
       active: true
     };
 
@@ -26604,27 +26599,28 @@ var Display = function (_React$Component) {
     key: 'handleUpdateExerciseIndex',
     value: function handleUpdateExerciseIndex() {
       var nextIndex = this.state.exerciseIndex + 1;
-      if (_exercises2.default[nextIndex]) {
+      if (this.props.exercises[nextIndex]) {
         this.setState({
           exerciseIndex: nextIndex,
-          sets: _exercises2.default[nextIndex].sets
+          sets: this.props.exercises[nextIndex].sets
         });
       }
     }
   }, {
     key: 'render',
     value: function render() {
+      console.log(this.props);
+      var exercises = this.props.exercises;
       var exerciseIndex = this.state.exerciseIndex;
 
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(_Timer2.default, {
-          duration: _exercises2.default[exerciseIndex].duration,
-          sets: this.state.sets,
+          duration: exercises[exerciseIndex].duration,
+          sets: exercises[exerciseIndex].sets,
           next: this.handleUpdateExerciseIndex
-        }),
-        _react2.default.createElement('div', null)
+        })
       );
     }
   }]);
@@ -26632,8 +26628,8 @@ var Display = function (_React$Component) {
   return Display;
 }(_react2.default.Component);
 
-var mapStateToProps = function mapStateToProps() {
-  return { exercises: _exercises2.default };
+var mapStateToProps = function mapStateToProps(state) {
+  return { exercises: state.exercises };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Display);
@@ -26676,30 +26672,24 @@ var Timer = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Timer.__proto__ || Object.getPrototypeOf(Timer)).call(this, props));
 
     _this.state = {
-      phase: 'buffer',
-      buffer: 10,
-      time: 0
+      buffer: false,
+      time: _this.props.duration,
+      setsLeft: _this.props.sets
     };
 
     _this.handleStartExercise = _this.handleStartExercise.bind(_this);
     _this.timer = _this.timer.bind(_this);
-    // this.decrementTimer = this.decrementTimer.bind(this);
     return _this;
   }
 
   _createClass(Timer, [{
-    key: 'handleStartExercise',
-    value: function handleStartExercise(e) {
-      e.preventDefault();
-      var _props = this.props,
-          duration = _props.duration,
-          sets = _props.sets;
-
-      this.timer(sets, duration);
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.timer();
     }
   }, {
     key: 'timer',
-    value: function timer(setsLeft, duration) {
+    value: function timer() {
       var timer = setInterval(decrementTimer.bind(this), 1000);
       function decrementTimer() {
         if (this.state.time > 0) {
@@ -26707,11 +26697,10 @@ var Timer = function (_React$Component) {
         } else {
           clearInterval(timer);
           if (!this.state.buffer) {
-            this.setState({ time: 2, buffer: true }, this.timer);
+            this.setState({ time: 5, buffer: true }, this.timer);
           } else if (this.state.setsLeft > 0) {
-            this.setState({ time: this.props.duration, buffer: false }, this.timer);
+            this.setState({ time: this.props.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
           } else {
-            console.log('DONE');
             this.props.next();
           }
         }
@@ -26720,7 +26709,6 @@ var Timer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log('rendered', this.props, this.state);
       return _react2.default.createElement(
         'div',
         null,
@@ -26809,14 +26797,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+// do this later with selectors
 var initialState = exports.initialState = (0, _immutable.fromJS)({
   exercises: _exercises2.default
 });
 
 function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _exercises2.default;
   var action = arguments[1];
 
+  console.log(state);
   switch (action.type) {
     case actionTypes.STORE_EXERCISES:
       return action.payload;

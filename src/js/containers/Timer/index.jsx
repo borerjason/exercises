@@ -5,24 +5,21 @@ class Timer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phase: 'buffer',
-      buffer: 10,
-      time: 0,
+      buffer: false,
+      time: this.props.duration,
+      setsLeft: this.props.sets,
     };
 
     this.handleStartExercise = this.handleStartExercise.bind(this);
     this.timer = this.timer.bind(this);
-    // this.decrementTimer = this.decrementTimer.bind(this);
   }
 
-  handleStartExercise(e) {
-    e.preventDefault();
-    const { duration, sets } = this.props;
-    this.timer(sets, duration);
+  componentDidMount() {
+    this.timer();
   }
 
 
-  timer(setsLeft, duration) {
+  timer() {
     const timer = setInterval(decrementTimer.bind(this), 1000);
     function decrementTimer() {
       if (this.state.time > 0) {
@@ -30,29 +27,26 @@ class Timer extends React.Component {
       } else {
         clearInterval(timer);
         if (!this.state.buffer) {
-          this.setState({ time: 2, buffer: true }, this.timer);
+          this.setState({ time: 5, buffer: true }, this.timer);
         } else if (this.state.setsLeft > 0) {
-          this.setState({ time: this.props.duration, buffer: false }, this.timer);
+          this.setState({ time: this.props.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
         } else {
-          console.log('DONE');
           this.props.next();
         }
       }
     }
   }
-
-
+  
   render() {
-    console.log('rendered', this.props, this.state);
     return (
-    <div>
-      <button
-        onClick={this.handleStartExercise}
-      >start
-      </button>
-      <div>{this.state.time}</div>
-      <div>Sets Left: {this.state.setsLeft}</div>
-    </div>
+      <div>
+        <button
+          onClick={this.handleStartExercise}
+        >start
+        </button>
+        <div>{this.state.time}</div>
+        <div>Sets Left: {this.state.setsLeft}</div>
+      </div>
     );
   }
 }

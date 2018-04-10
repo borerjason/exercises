@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import exercises from '../../../dummy_data/exercises';
 import Timer from '../Timer';
 
 class Display extends React.Component {
@@ -8,7 +7,6 @@ class Display extends React.Component {
     super(props);
     this.state = {
       exerciseIndex: 0,
-      sets: exercises[0].sets,
       active: true,
     };
 
@@ -17,29 +15,32 @@ class Display extends React.Component {
 
   handleUpdateExerciseIndex() {
     const nextIndex = this.state.exerciseIndex + 1;
-    if (exercises[nextIndex]) {
+    if (this.props.exercises[nextIndex]) {
       this.setState({
         exerciseIndex: nextIndex,
-        sets: exercises[nextIndex].sets,
+        sets: this.props.exercises[nextIndex].sets,
       });
     }
   }
-  
+
   render() {
+    console.log(this.props);
+    const { exercises } = this.props;
     const { exerciseIndex } = this.state;
     return (
       <div>
         <Timer
           duration={exercises[exerciseIndex].duration}
-          sets={this.state.sets}
+          sets={exercises[exerciseIndex].sets}
           next={this.handleUpdateExerciseIndex}
         />
-        <div></div>
       </div>
     );
   }
 }
 
-const mapStateToProps = () => ({ exercises });
+
+const mapStateToProps = state =>
+  ({ exercises: state.exercises });
 
 export default connect(mapStateToProps)(Display);
