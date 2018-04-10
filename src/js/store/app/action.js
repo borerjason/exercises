@@ -8,6 +8,7 @@ export function storeExercises(exercises) {
 }
 
 export function updateCurrentExercise(currIndex) {
+  console.log('currIndex in action', currIndex);
   return {
     type: actionTypes.UPDATE_EXERCISE,
     payload: { currIndex },

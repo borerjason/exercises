@@ -11,7 +11,6 @@ class Timer extends React.Component {
       buffer: false,
       time: this.props.duration,
       setsLeft: this.props.sets,
-      isActive: false,
     };
 
     this.timer = this.timer.bind(this);
@@ -27,32 +26,28 @@ class Timer extends React.Component {
     const timer = setInterval(decrementTimer.bind(this), 1000);
     function decrementTimer() {
       if (this.state.time > 0) {
-        this.setState({ time: this.state.time - 1, isActive: true });
+        this.setState({ time: this.state.time - 1 });
       } else {
         clearInterval(timer);
         if (!this.state.buffer) {
-          this.setState({ time: 1, buffer: true }, this.timer);
+          this.setState({ time: 10, buffer: true }, this.timer);
         } else if (this.state.setsLeft > 0) {
           this.setState({ time: this.props.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
         } else {
           if (this.props.exercises.currIndex < this.props.exercises.all.length - 1) {
-            this.props.updateCurrIndex(this.props.exercises.currIndex + 1);
-            // this.setState({
-            //   time: this.props.duration,
-            //   setsLeft: this.props.sets,
-            //   isActive: true,
-            // }, this.timer());
+            const nextIndex = this.props.exercises.currIndex + 1
+            this.props.updateCurrIndex(nextIndex);
+            this.setState({
+              time: this.props.exercises.all[this.props.exercises.currIndex].duration,
+              setsLeft: this.props.exercises.all[this.props.exercises.currIndex].sets,
+            }, this.timer());
           }
-         
-          // this.props.next();
         }
       }
     }
   }
 
   render() {
-
-    console.log('trigger in render', this.props);
     return (
       <div>
         <button
@@ -77,8 +72,8 @@ const mapStateToProps = ({ exercises }) => (
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateCurrIndex: () => {
-      dispatch(updateCurrentExercise());
+    updateCurrIndex: (currIndex) => {
+      dispatch(updateCurrentExercise(currIndex));
     },
   };
 };

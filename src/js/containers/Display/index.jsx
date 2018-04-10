@@ -25,7 +25,6 @@ class Display extends React.Component {
   // }
 
   displayNextExercise() {
-    console.log('triggered');
     if (this.state.exerciseIndex < this.props.exercises.length - 1) {
       this.setState({ exerciseIndex: this.state.exerciseIndex + 1 });
     }
@@ -37,7 +36,7 @@ class Display extends React.Component {
     const { exerciseIndex } = this.state;
     return (
       <div>
-        <h3>{exercises.all[exerciseIndex].name}</h3>
+        <h3>{exercises.all[exercises.currIndex].name}</h3>
         <Timer
           duration={exercises.all[exerciseIndex].duration}
           sets={exercises.all[exerciseIndex].sets}

@@ -26609,7 +26609,6 @@ var Display = function (_React$Component) {
   _createClass(Display, [{
     key: 'displayNextExercise',
     value: function displayNextExercise() {
-      console.log('triggered');
       if (this.state.exerciseIndex < this.props.exercises.length - 1) {
         this.setState({ exerciseIndex: this.state.exerciseIndex + 1 });
       }
@@ -26627,7 +26626,7 @@ var Display = function (_React$Component) {
         _react2.default.createElement(
           'h3',
           null,
-          exercises.all[exerciseIndex].name
+          exercises.all[exercises.currIndex].name
         ),
         _react2.default.createElement(_Timer2.default, {
           duration: exercises.all[exerciseIndex].duration,
@@ -26691,8 +26690,7 @@ var Timer = function (_React$Component) {
     _this.state = {
       buffer: false,
       time: _this.props.duration,
-      setsLeft: _this.props.sets,
-      isActive: false
+      setsLeft: _this.props.sets
     };
 
     _this.timer = _this.timer.bind(_this);
@@ -26714,24 +26712,22 @@ var Timer = function (_React$Component) {
       var timer = setInterval(decrementTimer.bind(this), 1000);
       function decrementTimer() {
         if (this.state.time > 0) {
-          this.setState({ time: this.state.time - 1, isActive: true });
+          this.setState({ time: this.state.time - 1 });
         } else {
           clearInterval(timer);
           if (!this.state.buffer) {
-            this.setState({ time: 1, buffer: true }, this.timer);
+            this.setState({ time: 10, buffer: true }, this.timer);
           } else if (this.state.setsLeft > 0) {
             this.setState({ time: this.props.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
           } else {
             if (this.props.exercises.currIndex < this.props.exercises.all.length - 1) {
-              this.props.updateCurrIndex(this.props.exercises.currIndex + 1);
-              // this.setState({
-              //   time: this.props.duration,
-              //   setsLeft: this.props.sets,
-              //   isActive: true,
-              // }, this.timer());
+              var nextIndex = this.props.exercises.currIndex + 1;
+              this.props.updateCurrIndex(nextIndex);
+              this.setState({
+                time: this.props.exercises.all[this.props.exercises.currIndex].duration,
+                setsLeft: this.props.exercises.all[this.props.exercises.currIndex].sets
+              }, this.timer());
             }
-
-            // this.props.next();
           }
         }
       }
@@ -26739,8 +26735,6 @@ var Timer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-
-      console.log('trigger in render', this.props);
       return _react2.default.createElement(
         'div',
         null,
@@ -26782,8 +26776,8 @@ var mapStateToProps = function mapStateToProps(_ref) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    updateCurrIndex: function updateCurrIndex() {
-      dispatch((0, _action.updateCurrentExercise)());
+    updateCurrIndex: function updateCurrIndex(currIndex) {
+      dispatch((0, _action.updateCurrentExercise)(currIndex));
     }
   };
 };
@@ -31891,6 +31885,7 @@ function storeExercises(exercises) {
 }
 
 function updateCurrentExercise(currIndex) {
+  console.log('currIndex in action', currIndex);
   return {
     type: actionTypes.UPDATE_EXERCISE,
     payload: { currIndex: currIndex }
