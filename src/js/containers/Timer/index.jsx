@@ -5,15 +5,14 @@ class Timer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      buffer: false,
+      phase: 'buffer',
+      buffer: 10,
+      time: 0,
     };
 
     this.handleStartExercise = this.handleStartExercise.bind(this);
     this.timer = this.timer.bind(this);
     // this.decrementTimer = this.decrementTimer.bind(this);
-  }
-  componentDidMount() {
-    console.log('mounted', this.props, this.state);
   }
 
   handleStartExercise(e) {

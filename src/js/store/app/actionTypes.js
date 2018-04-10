@@ -1,1 +1,1 @@
-export const MY_ACTION = 'REACTSCRATCH/feature/myAction';
+export const STORE_EXERCISES = 'EXERCISES/STORE_EXERCISES';

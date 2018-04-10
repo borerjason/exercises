@@ -1,8 +1,10 @@
 // import reducers here
+import { combineReducers } from 'redux';
 
-export default function() {
+import exercises from '../store/app/reducer';
+
+export default combineReducers({
   // add all reducers here...
-  return {
-    
-  }
-};
+  exercises,
+});
+

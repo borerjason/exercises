@@ -1,8 +1,8 @@
 import * as actionTypes from './actionTypes';
 
-export function myAction(foo) {
+export default function storeExercises(exercises) {
   return {
-    type: actionTypes.MY_ACTION,
-    payload: { foo },
+    type: actionTypes.STORE_EXERCISES,
+    payload: { exercises },
   };
-} 
+}
