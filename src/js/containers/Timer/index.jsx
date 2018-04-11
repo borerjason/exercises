@@ -40,7 +40,7 @@ class Timer extends React.Component {
       }
     }
   }
-
+  /* eslint-enable */
 
   render() {
     return (
@@ -61,18 +61,13 @@ Timer.propTypes = {
   duration: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ exercises }) => (
-  { exercises });
+const mapStateToProps = ({ exercises }) => ({ exercises });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateCurrIndex: (currIndex) => {
-      dispatch(updateCurrentExercise(currIndex));
-    },
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  updateCurrIndex: (currIndex) => {
+    dispatch(updateCurrentExercise(currIndex));
+  },
+});
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);
-
-// have function here that upates the active exercise, then from the active exercise I can pull in the duration and the sets.
-// In my display function I can pull in active exercise and pull in name, description, etc. 
