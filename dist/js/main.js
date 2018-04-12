@@ -26563,7 +26563,6 @@ var Display = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Display.__proto__ || Object.getPrototypeOf(Display)).call(this, props));
 
     _this.state = {
-      exerciseIndex: 0
       // active: true,
     };
     return _this;
@@ -26573,7 +26572,8 @@ var Display = function (_React$Component) {
     key: 'render',
     value: function render() {
       var exercises = this.props.exercises;
-      var exerciseIndex = this.state.exerciseIndex;
+
+      var currExercise = exercises.all[exercises.currIndex];
 
       return _react2.default.createElement(
         'div',
@@ -26581,13 +26581,13 @@ var Display = function (_React$Component) {
         _react2.default.createElement(
           'h3',
           null,
-          exercises.all[exercises.currIndex].name
+          currExercise.name
         ),
         _react2.default.createElement(_Timer2.default, {
-          duration: exercises.all[exerciseIndex].duration,
-          sets: exercises.all[exerciseIndex].sets
+          duration: currExercise.duration,
+          sets: currExercise.sets
         }),
-        _react2.default.createElement('img', { alt: 'no-img', src: exercises.all[exercises.currIndex].image })
+        _react2.default.createElement('img', { alt: 'no-img', src: currExercise.image })
       );
     }
   }]);
@@ -26596,11 +26596,12 @@ var Display = function (_React$Component) {
 }(_react2.default.Component);
 
 Display.propTypes = {
-  // exercises: PropTypes.isArray.isRequired,
+  exercises: _propTypes2.default.arrayOf(_propTypes2.default.objects).isRequired
 };
 
-var mapStateToProps = function mapStateToProps(state) {
-  return { exercises: state.exercises };
+var mapStateToProps = function mapStateToProps(_ref) {
+  var exercises = _ref.exercises;
+  return { exercises: exercises };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Display);
@@ -26626,7 +26627,13 @@ var _propTypes = __webpack_require__(3);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _reselect = __webpack_require__(86);
+
 var _reactRedux = __webpack_require__(10);
+
+var _Time = __webpack_require__(85);
+
+var _Time2 = _interopRequireDefault(_Time);
 
 var _action = __webpack_require__(79);
 
@@ -26701,11 +26708,9 @@ var Timer = function (_React$Component) {
           },
           'start'
         ),
-        _react2.default.createElement(
-          'div',
-          null,
-          this.state.time
-        ),
+        _react2.default.createElement(_Time2.default, {
+          time: this.state.time
+        }),
         _react2.default.createElement(
           'div',
           null,
@@ -26724,10 +26729,13 @@ Timer.propTypes = {
   duration: _propTypes2.default.number.isRequired
 };
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var exercises = _ref.exercises;
-  return { exercises: exercises };
+var selectExercises = function selectExercises(state) {
+  return state.exercises;
 };
+
+var mapStateToProps = (0, _reselect.createStructuredSelector)({
+  exercises: selectExercises
+});
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
@@ -31940,6 +31948,172 @@ module.exports = [{
   holdDuration: null or number
 }
 */
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Time = function Time(_ref) {
+  var time = _ref.time;
+  return _react2.default.createElement(
+    'div',
+    null,
+    time
+  );
+};
+
+Time.propTypes = {
+  time: _propTypes2.default.number.isRequired
+};
+exports.default = Time;
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.defaultMemoize = defaultMemoize;
+exports.createSelectorCreator = createSelectorCreator;
+exports.createStructuredSelector = createStructuredSelector;
+function defaultEqualityCheck(a, b) {
+  return a === b;
+}
+
+function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
+  if (prev === null || next === null || prev.length !== next.length) {
+    return false;
+  }
+
+  // Do this in a for loop (and not a `forEach` or an `every`) so we can determine equality as fast as possible.
+  var length = prev.length;
+  for (var i = 0; i < length; i++) {
+    if (!equalityCheck(prev[i], next[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function defaultMemoize(func) {
+  var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
+
+  var lastArgs = null;
+  var lastResult = null;
+  // we reference arguments instead of spreading them for performance reasons
+  return function () {
+    if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
+      // apply arguments instead of spreading for performance.
+      lastResult = func.apply(null, arguments);
+    }
+
+    lastArgs = arguments;
+    return lastResult;
+  };
+}
+
+function getDependencies(funcs) {
+  var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
+
+  if (!dependencies.every(function (dep) {
+    return typeof dep === 'function';
+  })) {
+    var dependencyTypes = dependencies.map(function (dep) {
+      return typeof dep;
+    }).join(', ');
+    throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
+  }
+
+  return dependencies;
+}
+
+function createSelectorCreator(memoize) {
+  for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    memoizeOptions[_key - 1] = arguments[_key];
+  }
+
+  return function () {
+    for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      funcs[_key2] = arguments[_key2];
+    }
+
+    var recomputations = 0;
+    var resultFunc = funcs.pop();
+    var dependencies = getDependencies(funcs);
+
+    var memoizedResultFunc = memoize.apply(undefined, [function () {
+      recomputations++;
+      // apply arguments instead of spreading for performance.
+      return resultFunc.apply(null, arguments);
+    }].concat(memoizeOptions));
+
+    // If a selector is called with the exact same arguments we don't need to traverse our dependencies again.
+    var selector = defaultMemoize(function () {
+      var params = [];
+      var length = dependencies.length;
+
+      for (var i = 0; i < length; i++) {
+        // apply arguments instead of spreading and mutate a local list of params for performance.
+        params.push(dependencies[i].apply(null, arguments));
+      }
+
+      // apply arguments instead of spreading for performance.
+      return memoizedResultFunc.apply(null, params);
+    });
+
+    selector.resultFunc = resultFunc;
+    selector.recomputations = function () {
+      return recomputations;
+    };
+    selector.resetRecomputations = function () {
+      return recomputations = 0;
+    };
+    return selector;
+  };
+}
+
+var createSelector = exports.createSelector = createSelectorCreator(defaultMemoize);
+
+function createStructuredSelector(selectors) {
+  var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
+
+  if (typeof selectors !== 'object') {
+    throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
+  }
+  var objectKeys = Object.keys(selectors);
+  return selectorCreator(objectKeys.map(function (key) {
+    return selectors[key];
+  }), function () {
+    for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      values[_key3] = arguments[_key3];
+    }
+
+    return values.reduce(function (composition, value, index) {
+      composition[objectKeys[index]] = value;
+      return composition;
+    }, {});
+  });
+}
 
 /***/ })
 /******/ ]);

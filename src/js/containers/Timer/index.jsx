@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { createSelector, createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 
+import Time from '../../components/Time/Time';
 import { updateCurrentExercise } from '../../store/app/action';
 import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from './utils/timer';
 
@@ -49,7 +51,9 @@ class Timer extends React.Component {
           onClick={this.handleStartExercise}
         >start
         </button>
-        <div>{this.state.time}</div>
+        <Time
+          time={this.state.time}
+        />
         <div>Sets Left: {this.state.setsLeft}</div>
       </div>
     );
@@ -61,13 +65,16 @@ Timer.propTypes = {
   duration: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ exercises }) => ({ exercises });
+const selectExercises = state => state.exercises;
+
+const mapStateToProps = createStructuredSelector({
+  exercises: selectExercises,
+});
 
 const mapDispatchToProps = dispatch => ({
   updateCurrIndex: (currIndex) => {
     dispatch(updateCurrentExercise(currIndex));
   },
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);
