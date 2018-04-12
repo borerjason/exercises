@@ -1879,35 +1879,31 @@ module.exports = __webpack_require__(30);
 "use strict";
 
 
-var _reactDom = __webpack_require__(31);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(31);
 
 var _reactRedux = __webpack_require__(10);
 
 var _redux = __webpack_require__(12);
 
-var _App = __webpack_require__(68);
-
-var _App2 = _interopRequireDefault(_App);
-
 var _reducers = __webpack_require__(81);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
+var _App = __webpack_require__(68);
+
+var _App2 = _interopRequireDefault(_App);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var wrapper = document.getElementById('app');
-
-_reactDom2.default.render(_react2.default.createElement(
+(0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
   { store: (0, _redux.createStore)(_reducers2.default) },
   _react2.default.createElement(_App2.default, null)
-), wrapper);
+), document.getElementById('app'));
 
 /***/ }),
 /* 31 */
@@ -26757,8 +26753,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.storeExercises = storeExercises;
-exports.updateCurrentExercise = updateCurrentExercise;
+exports.updateCurrentExercise = exports.storeExercises = undefined;
 
 var _actionTypes = __webpack_require__(28);
 
@@ -26766,20 +26761,19 @@ var actionTypes = _interopRequireWildcard(_actionTypes);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function storeExercises(exercises) {
+var storeExercises = exports.storeExercises = function storeExercises(exercises) {
   return {
     type: actionTypes.STORE_EXERCISES,
     payload: { exercises: exercises }
   };
-}
+};
 
-function updateCurrentExercise(currIndex) {
-  console.log('currIndex in action', currIndex);
+var updateCurrentExercise = exports.updateCurrentExercise = function updateCurrentExercise(currIndex) {
   return {
     type: actionTypes.UPDATE_EXERCISE,
     payload: { currIndex: currIndex }
   };
-}
+};
 
 /***/ }),
 /* 80 */
@@ -26842,9 +26836,7 @@ var _reducer2 = _interopRequireDefault(_reducer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import reducers here
 exports.default = (0, _redux.combineReducers)({
-  // add all reducers here...
   exercises: _reducer2.default
 });
 
