@@ -6,16 +6,21 @@ export function decrementTimeByOne() {
   this.setState({ time: this.state.time - 1 });
 }
 
-export function nextExercise() {
-  if (this.props.exercises.currIndex < this.props.exercises.all.length - 1) {
-    const nextIndex = this.props.exercises.currIndex + 1;
+/**
+ * Summary: updates currIndex in store to next index.
+ */
+export const nextExercise = () => {
+  const { currIndex, all } = this.props.exercises;
+
+  if (currIndex < all.length - 1) {
+    const nextIndex = currIndex + 1;
     this.props.updateCurrIndex(nextIndex);
     this.setState({
-      time: this.props.exercises.all[this.props.exercises.currIndex].duration,
-      setsLeft: this.props.exercises.all[this.props.exercises.currIndex].sets,
+      time: all[currIndex].duration,
+      setsLeft: all[currIndex].sets,
     }, this.timer());
   }
-}
+};
 
 export function nextSet() {
   const currExercise = this.props.exercises.all[this.props.exercises.currIndex];

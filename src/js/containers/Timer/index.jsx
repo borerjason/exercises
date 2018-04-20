@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createSelector, createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -7,21 +7,18 @@ import Time from '../../components/Time/Time';
 import { updateCurrentExercise } from '../../store/app/action';
 import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from './utils/timer';
 
-class Timer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      buffer: false,
-      time: this.props.duration,
-      setsLeft: this.props.sets,
-    };
-
-    this.timer = this.timer.bind(this);
-  }
+class Timer extends Component {
+  state = {
+    buffer: false,
+    time: this.props.duration,
+    setsLeft: this.props.sets,
+  };
 
   componentDidMount() {
     this.timer();
   }
+
+  timer = this.timer.bind(this);
 
   /* eslint-disable */
   timer() {
