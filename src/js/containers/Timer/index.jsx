@@ -12,26 +12,26 @@ class Timer extends Component {
     buffer: false,
     time: this.props.duration,
     setsLeft: this.props.sets,
+    active: false,
   };
 
-  componentDidMount() {
-    this.timer();
-  }
-
   timer = this.timer.bind(this);
+  handleClickToggle = this.handleClickToggle.bind(this);
 
   /* eslint-disable */
   timer() {
     const timer = setInterval(runTimer.bind(this), 1000);
     
     function runTimer() {
-      if (this.state.time > 0) {
+      const { time, buffer, setsLeft, active } = this.state;
+      if (time > 0 && active) {
         decrementTimeByOne.call(this);
       } else {
         clearInterval(timer);
-        if (!this.state.buffer) {
+        if (!active) { return; }
+        else if (!buffer) {
           startBuffer.call(this);
-        } else if (this.state.setsLeft > 0) {
+        } else if (setsLeft > 0) {
           nextSet.call(this);
         } else {
           nextExercise.call(this);
@@ -39,14 +39,24 @@ class Timer extends Component {
       }
     }
   }
+
+  handleClickToggle() {
+    if (!this.state.active) {
+      this.setState({ active: true}, this.timer);
+    } else {
+      this.setState({ active: false})
+    }
+  }
   /* eslint-enable */
 
   render() {
+    const btnText = this.state.active === true ? 'pause' : 'start';
     return (
       <div>
         <button
-          onClick={this.handleStartExercise}
-        >start
+          className="btn btn-primary"
+          onClick={this.handleClickToggle}
+        >{btnText}
         </button>
         <Time
           time={this.state.time}

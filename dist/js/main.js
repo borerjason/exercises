@@ -31789,16 +31789,12 @@ var Timer = function (_Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Timer.__proto__ || Object.getPrototypeOf(Timer)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       buffer: false,
       time: _this.props.duration,
-      setsLeft: _this.props.sets
-    }, _this.timer = _this.timer.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
+      setsLeft: _this.props.sets,
+      active: false
+    }, _this.timer = _this.timer.bind(_this), _this.handleClickToggle = _this.handleClickToggle.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Timer, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.timer();
-    }
-  }, {
     key: 'timer',
 
 
@@ -31807,13 +31803,21 @@ var Timer = function (_Component) {
       var timer = setInterval(runTimer.bind(this), 1000);
 
       function runTimer() {
-        if (this.state.time > 0) {
+        var _state = this.state,
+            time = _state.time,
+            buffer = _state.buffer,
+            setsLeft = _state.setsLeft,
+            active = _state.active;
+
+        if (time > 0 && active) {
           _timer.decrementTimeByOne.call(this);
         } else {
           clearInterval(timer);
-          if (!this.state.buffer) {
+          if (!active) {
+            return;
+          } else if (!buffer) {
             _timer.startBuffer.call(this);
-          } else if (this.state.setsLeft > 0) {
+          } else if (setsLeft > 0) {
             _timer.nextSet.call(this);
           } else {
             _timer.nextExercise.call(this);
@@ -31821,20 +31825,31 @@ var Timer = function (_Component) {
         }
       }
     }
+  }, {
+    key: 'handleClickToggle',
+    value: function handleClickToggle() {
+      if (!this.state.active) {
+        this.setState({ active: true }, this.timer);
+      } else {
+        this.setState({ active: false });
+      }
+    }
     /* eslint-enable */
 
   }, {
     key: 'render',
     value: function render() {
+      var btnText = this.state.active === true ? 'pause' : 'start';
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           'button',
           {
-            onClick: this.handleStartExercise
+            className: 'btn btn-primary',
+            onClick: this.handleClickToggle
           },
-          'start'
+          btnText
         ),
         _react2.default.createElement(_Time2.default, {
           time: this.state.time
