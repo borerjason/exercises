@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { createSelector, createStructuredSelector } from 'reselect';
+import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 
 import Time from '../../components/Time/Time';

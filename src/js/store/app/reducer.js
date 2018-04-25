@@ -10,7 +10,6 @@ import dummyExercises from '../../../dummy_data/exercises';
 const initialState = { all: dummyExercises, currIndex: 0 };
 
 export default function reducer(state = initialState, action) {
-  console.log(state, action);
   switch (action.type) {
     case actionTypes.STORE_EXERCISES:
       return action.payload;

@@ -1,16 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Timer from '../Timer';
 
-class Display extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // active: true,
-    };
-  }
+class Display extends Component {
+  state = {};
 
   render() {
     const { exercises } = this.props;
@@ -30,7 +25,10 @@ class Display extends React.Component {
 }
 
 Display.propTypes = {
-  exercises: PropTypes.arrayOf(PropTypes.objects).isRequired,
+  exercises: PropTypes.shape({
+    all: PropTypes.arrayOf(PropTypes.object),
+    currIndex: PropTypes.number,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ exercises }) => ({ exercises });

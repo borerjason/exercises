@@ -1,7 +1,6 @@
-// logic for exercises
-
-// state
-
+/**
+ * Summary: decrements timer state by one.
+ */
 export function decrementTimeByOne() {
   this.setState({ time: this.state.time - 1 });
 }
@@ -9,7 +8,7 @@ export function decrementTimeByOne() {
 /**
  * Summary: updates currIndex in store to next index.
  */
-export const nextExercise = () => {
+export function nextExercise() {
   const { currIndex, all } = this.props.exercises;
 
   if (currIndex < all.length - 1) {
@@ -20,11 +19,17 @@ export const nextExercise = () => {
       setsLeft: all[currIndex].sets,
     }, this.timer());
   }
-};
+}
 
 export function nextSet() {
-  const currExercise = this.props.exercises.all[this.props.exercises.currIndex];
-  this.setState({ time: currExercise.duration, buffer: false, setsLeft: this.state.setsLeft - 1 }, this.timer);
+  const { currIndex, all } = this.props.exercises;
+  const currExercise = all[currIndex];
+
+  this.setState({
+    time: currExercise.duration,
+    buffer: false,
+    setsLeft: this.state.setsLeft - 1,
+  }, this.timer);
 }
 
 export function startBuffer() {
