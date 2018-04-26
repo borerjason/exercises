@@ -14,24 +14,19 @@ export function nextExercise() {
   if (currIndex < all.length - 1) {
     const nextIndex = currIndex + 1;
     this.props.updateCurrIndex(nextIndex);
-    this.setState({
-      time: all[currIndex].duration,
-      setsLeft: all[currIndex].sets,
-    }, this.timer());
   }
 }
 
 export function nextSet() {
-  const { currIndex, all } = this.props.exercises;
-  const currExercise = all[currIndex];
+  const { duration } = this.props;
 
   this.setState({
-    time: currExercise.duration,
+    time: duration,
     buffer: false,
-    setsLeft: this.state.setsLeft - 1,
-  }, this.timer);
+    // setsLeft: this.state.setsLeft - 1,
+  }, this.startTimer);
 }
 
 export function startBuffer() {
-  this.setState({ time: 1, buffer: true }, this.timer);
+  this.setState({ time: 2, buffer: true, setsLeft: this.state.setsLeft - 1 }, this.startTimer);
 }

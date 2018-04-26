@@ -29685,18 +29685,18 @@ module.exports = [{
   muscles: 'hips',
   image: 'https://i.ytimg.com/vi/dUgr_vjDWNw/maxresdefault.jpg',
   video: null,
-  sets: 2,
+  sets: 3,
   reps: null,
-  duration: 5
+  duration: 3
 }, {
   name: 'quadruped hip extension',
   description: 'Get on all fours, maintain neutral spine, Raise legs up until upper leg is parallel to floor.',
   muscles: 'hips',
   image: null,
   video: null,
-  sets: 6,
+  sets: 2,
   reps: 10,
-  duration: 45
+  duration: 3
 }, {
   name: 'Glute Bridge',
   description: 'This is a desription about the glute bridge. Make sure that you’re moving at the hips and not the lower back.',
@@ -29705,7 +29705,7 @@ module.exports = [{
   video: null,
   sets: 3,
   reps: null,
-  duration: 30
+  duration: 5
 }, {
   name: 'Cat & Camel',
   description: 'Round back, head up and navel to ground on inhale, round back navel to sky on exhale',
@@ -31653,9 +31653,11 @@ var Display = function (_Component) {
   _createClass(Display, [{
     key: 'render',
     value: function render() {
-      var exercises = this.props.exercises;
+      var _props$exercises = this.props.exercises,
+          all = _props$exercises.all,
+          currIndex = _props$exercises.currIndex;
 
-      var currExercise = exercises.all[exercises.currIndex];
+      var currExercise = all[currIndex];
 
       return _react2.default.createElement(
         _components.FlexRow,
@@ -31663,8 +31665,11 @@ var Display = function (_Component) {
         _react2.default.createElement(
           _List.List,
           null,
-          exercises.all.map(function (exercise) {
-            return _react2.default.createElement(_List.ListItem, { primaryText: exercise.name });
+          all.map(function (exercise) {
+            return _react2.default.createElement(_List.ListItem, {
+              primaryText: exercise.name,
+              key: Math.random()
+            });
           })
         ),
         _react2.default.createElement(
@@ -31672,7 +31677,8 @@ var Display = function (_Component) {
           null,
           _react2.default.createElement(_Timer2.default, {
             duration: currExercise.duration,
-            sets: currExercise.sets
+            sets: currExercise.sets,
+            index: currIndex
           }),
           _react2.default.createElement(
             _Card.Card,
@@ -31779,19 +31785,20 @@ var Timer = function (_Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Timer.__proto__ || Object.getPrototypeOf(Timer)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      buffer: false,
-      time: _this.props.duration,
-      setsLeft: _this.props.sets,
       active: false
-    }, _this.timer = _this.timer.bind(_this), _this.handleClickToggle = _this.handleClickToggle.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this.startTimer = _this.startTimer.bind(_this), _this.handleClickToggle = _this.handleClickToggle.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Timer, [{
-    key: 'timer',
-
-
-    /* eslint-disable */
-    value: function timer() {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (prevProps.index !== this.props.index) {
+        this.startTimer();
+      }
+    }
+  }, {
+    key: 'startTimer',
+    value: function startTimer() {
       var timer = setInterval(runTimer.bind(this), 1000);
 
       function runTimer() {
@@ -31800,6 +31807,7 @@ var Timer = function (_Component) {
             buffer = _state.buffer,
             setsLeft = _state.setsLeft,
             active = _state.active;
+
 
         if (time > 0 && active) {
           _timer.decrementTimeByOne.call(this);
@@ -31821,7 +31829,7 @@ var Timer = function (_Component) {
     key: 'handleClickToggle',
     value: function handleClickToggle() {
       if (!this.state.active) {
-        this.setState({ active: true }, this.timer);
+        this.setState({ active: true }, this.startTimer);
       } else {
         this.setState({ active: false });
       }
@@ -31831,6 +31839,7 @@ var Timer = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log(this.state);
       var btnText = this.state.active === true ? 'pause' : 'start';
       return _react2.default.createElement(
         'div',
@@ -31851,14 +31860,23 @@ var Timer = function (_Component) {
         })
       );
     }
+  }], [{
+    key: 'getDerivedStateFromProps',
+    value: function getDerivedStateFromProps(nextProps) {
+      return {
+        time: nextProps.duration,
+        setsLeft: nextProps.sets,
+        index: nextProps.index,
+        buffer: false
+      };
+    }
   }]);
 
   return Timer;
 }(_react.Component);
 
 Timer.propTypes = {
-  sets: _propTypes2.default.number.isRequired,
-  duration: _propTypes2.default.number.isRequired
+  index: _propTypes2.default.number.isRequired
 };
 
 var selectExercises = function selectExercises(state) {
@@ -32145,29 +32163,22 @@ function nextExercise() {
   if (currIndex < all.length - 1) {
     var nextIndex = currIndex + 1;
     this.props.updateCurrIndex(nextIndex);
-    this.setState({
-      time: all[currIndex].duration,
-      setsLeft: all[currIndex].sets
-    }, this.timer());
   }
 }
 
 function nextSet() {
-  var _props$exercises2 = this.props.exercises,
-      currIndex = _props$exercises2.currIndex,
-      all = _props$exercises2.all;
+  var duration = this.props.duration;
 
-  var currExercise = all[currIndex];
 
   this.setState({
-    time: currExercise.duration,
-    buffer: false,
-    setsLeft: this.state.setsLeft - 1
-  }, this.timer);
+    time: duration,
+    buffer: false
+    // setsLeft: this.state.setsLeft - 1,
+  }, this.startTimer);
 }
 
 function startBuffer() {
-  this.setState({ time: 1, buffer: true }, this.timer);
+  this.setState({ time: 2, buffer: true, setsLeft: this.state.setsLeft - 1 }, this.startTimer);
 }
 
 /***/ }),

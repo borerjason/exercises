@@ -5,9 +5,9 @@ module.exports = [
     muscles: 'hips',
     image: 'https://i.ytimg.com/vi/dUgr_vjDWNw/maxresdefault.jpg',
     video: null,
-    sets: 2,
+    sets: 3,
     reps: null,
-    duration: 5,
+    duration: 3,
   },
   {
     name: 'quadruped hip extension',
@@ -15,9 +15,9 @@ module.exports = [
     muscles: 'hips',
     image: null,
     video: null,
-    sets: 6,
+    sets: 2,
     reps: 10,
-    duration: 45,
+    duration: 3,
   },
   {
     name: 'Glute Bridge',
@@ -27,7 +27,7 @@ module.exports = [
     video: null,
     sets: 3,
     reps: null,
-    duration: 30,
+    duration: 5,
   },
   {
     name: 'Cat & Camel',

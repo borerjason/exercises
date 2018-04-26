@@ -11,20 +11,24 @@ class Display extends Component {
   state = {};
 
   render() {
-    const { exercises } = this.props;
-    const currExercise = exercises.all[exercises.currIndex];
+    const { exercises: { all, currIndex } } = this.props;
+    const currExercise = all[currIndex];
 
     return (
       <FlexRow>
         <List>
-          {exercises.all.map(exercise => (
-            <ListItem primaryText={exercise.name} />
+          {all.map(exercise => (
+            <ListItem
+              primaryText={exercise.name}
+              key={Math.random()}
+            />
           ))}
         </List>
         <FlexCol>
           <Timer
             duration={currExercise.duration}
             sets={currExercise.sets}
+            index={currIndex}
           />
           <Card
             style={{ width: '500px' }}

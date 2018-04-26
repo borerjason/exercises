@@ -9,22 +9,39 @@ import { updateCurrentExercise } from '../../store/app/action';
 import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from './utils/timer';
 
 class Timer extends Component {
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      time: nextProps.duration,
+      setsLeft: nextProps.sets,
+      index: nextProps.index,
+      buffer: false,
+    };
+  }
+
   state = {
-    buffer: false,
-    time: this.props.duration,
-    setsLeft: this.props.sets,
     active: false,
   };
 
-  timer = this.timer.bind(this);
+  componentDidUpdate(prevProps) {
+    if (prevProps.index !== this.props.index) {
+      this.startTimer();
+    }
+  }
+
+  startTimer = this.startTimer.bind(this);
   handleClickToggle = this.handleClickToggle.bind(this);
 
-  /* eslint-disable */
-  timer() {
+  startTimer() {
     const timer = setInterval(runTimer.bind(this), 1000);
-    
+
     function runTimer() {
-      const { time, buffer, setsLeft, active } = this.state;
+      const {
+        time,
+        buffer,
+        setsLeft,
+        active,
+      } = this.state;
+
       if (time > 0 && active) {
         decrementTimeByOne.call(this);
       } else {
@@ -43,14 +60,15 @@ class Timer extends Component {
 
   handleClickToggle() {
     if (!this.state.active) {
-      this.setState({ active: true}, this.timer);
+      this.setState({ active: true }, this.startTimer);
     } else {
-      this.setState({ active: false})
+      this.setState({ active: false });
     }
   }
   /* eslint-enable */
 
   render() {
+    console.log(this.state);
     const btnText = this.state.active === true ? 'pause' : 'start';
     return (
       <div>
@@ -69,8 +87,7 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  sets: PropTypes.number.isRequired,
-  duration: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 const selectExercises = state => state.exercises;
