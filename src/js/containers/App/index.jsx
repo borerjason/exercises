@@ -1,13 +1,15 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Header from '../../components/Header';
+import AppBar from 'material-ui/AppBar';
 import Display from '../Display';
 
 const App = () => {
   return (
     <MuiThemeProvider>
       <div>
-        <Header />
+        <AppBar
+          title="Daily Exercises"
+        />
         <Display />
       </div>
     </MuiThemeProvider>

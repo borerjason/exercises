@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 
+import RaisedButton from 'material-ui/RaisedButton';
 import Time from '../../components/Time/Time';
 import { updateCurrentExercise } from '../../store/app/action';
 import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from './utils/timer';
@@ -57,11 +58,11 @@ class Timer extends Component {
           time={this.state.time}
         />
         <div>Sets Left: {this.state.setsLeft}</div>
-        <button
-          className="btn btn-primary"
+        <RaisedButton
+          label={btnText}
+          primary={true}
           onClick={this.handleClickToggle}
-        >{btnText}
-        </button>
+        />
       </div>
     );
   }
