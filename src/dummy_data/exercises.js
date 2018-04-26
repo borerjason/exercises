@@ -7,7 +7,7 @@ module.exports = [
     video: null,
     sets: 2,
     reps: null,
-    duration: 3,
+    duration: 5,
   },
   {
     name: 'quadruped hip extension',
@@ -25,9 +25,9 @@ module.exports = [
     muscles: 'glutes',
     image: null,
     video: null,
-    sets: 2,
-    reps: 10,
-    duration: 5,
+    sets: 3,
+    reps: null,
+    duration: 30,
   },
   {
     name: 'Cat & Camel',
@@ -35,9 +35,9 @@ module.exports = [
     muscles: 'core',
     image: null,
     video: null,
-    sets: 2,
+    sets: 1,
     reps: 10,
-    duration: 5,
+    duration: 60,
   },
   {
     name: 'Plank',
@@ -45,9 +45,9 @@ module.exports = [
     muscles: 'core',
     image: null,
     video: null,
-    sets: 2,
+    sets: 5,
     reps: 10,
-    duration: 5,
+    duration: 60,
   },
 ];
 

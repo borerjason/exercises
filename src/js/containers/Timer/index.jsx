@@ -53,15 +53,15 @@ class Timer extends Component {
     const btnText = this.state.active === true ? 'pause' : 'start';
     return (
       <div>
+        <Time
+          time={this.state.time}
+        />
+        <div>Sets Left: {this.state.setsLeft}</div>
         <button
           className="btn btn-primary"
           onClick={this.handleClickToggle}
         >{btnText}
         </button>
-        <Time
-          time={this.state.time}
-        />
-        <div>Sets Left: {this.state.setsLeft}</div>
       </div>
     );
   }

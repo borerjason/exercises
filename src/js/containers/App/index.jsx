@@ -1,14 +1,16 @@
 import React from 'react';
-
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from '../../components/Header';
 import Display from '../Display';
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      <Display />
-    </div>
+    <MuiThemeProvider>
+      <div>
+        <Header />
+        <Display />
+      </div>
+    </MuiThemeProvider>
   );
 };
 
