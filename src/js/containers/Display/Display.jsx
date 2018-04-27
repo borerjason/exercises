@@ -5,7 +5,7 @@ import { Card, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Ca
 import { List, ListItem } from 'material-ui/List';
 import { FlexCol, FlexRow } from '../../components';
 
-import Timer from '../Timer';
+import Timer from '../Timer/Timer';
 
 class Display extends Component {
   state = {};

@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Time from '../../components/Time/Time';
 import { Label, TimeWrapper, FlexRow, FlexCol } from '../../components';
 import { updateCurrentExercise } from '../../store/app/action';
-import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from './utils/timer';
+import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from '../../utils/timer';
 
 class Timer extends Component {
   static getDerivedStateFromProps(nextProps) {

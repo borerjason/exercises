@@ -1,7 +1,7 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import Display from '../Display';
+import Display from '../Display/Display';
 
 const App = () => (
   <MuiThemeProvider>

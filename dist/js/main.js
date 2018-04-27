@@ -4867,7 +4867,7 @@ var _reducers = __webpack_require__(149);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
-var _App = __webpack_require__(153);
+var _App = __webpack_require__(299);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -30415,52 +30415,7 @@ module.exports = [{
 */
 
 /***/ }),
-/* 153 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _MuiThemeProvider = __webpack_require__(154);
-
-var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
-
-var _AppBar = __webpack_require__(235);
-
-var _AppBar2 = _interopRequireDefault(_AppBar);
-
-var _Display = __webpack_require__(263);
-
-var _Display2 = _interopRequireDefault(_Display);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var App = function App() {
-  return _react2.default.createElement(
-    _MuiThemeProvider2.default,
-    null,
-    _react2.default.createElement(
-      'div',
-      null,
-      _react2.default.createElement(_AppBar2.default, {
-        title: 'Daily Exercises'
-      }),
-      _react2.default.createElement(_Display2.default, null)
-    )
-  );
-};
-
-exports.default = App;
-
-/***/ }),
+/* 153 */,
 /* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39284,139 +39239,7 @@ exports.default = Paper;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 263 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(45);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _Card = __webpack_require__(264);
-
-var _List = __webpack_require__(275);
-
-var _components = __webpack_require__(72);
-
-var _Timer = __webpack_require__(289);
-
-var _Timer2 = _interopRequireDefault(_Timer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Display = function (_Component) {
-  _inherits(Display, _Component);
-
-  function Display() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Display);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Display.__proto__ || Object.getPrototypeOf(Display)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(Display, [{
-    key: 'render',
-    value: function render() {
-      var _props$exercises = this.props.exercises,
-          all = _props$exercises.all,
-          currIndex = _props$exercises.currIndex;
-
-      var currExercise = all[currIndex];
-
-      return _react2.default.createElement(
-        _components.FlexRow,
-        null,
-        _react2.default.createElement(
-          _List.List,
-          null,
-          all.map(function (exercise) {
-            return _react2.default.createElement(_List.ListItem, {
-              primaryText: exercise.name,
-              key: exercise.id
-            });
-          })
-        ),
-        _react2.default.createElement(
-          _components.FlexCol,
-          null,
-          _react2.default.createElement(_Timer2.default, {
-            duration: currExercise.duration,
-            sets: currExercise.sets,
-            index: currIndex
-          }),
-          _react2.default.createElement(
-            _Card.Card,
-            {
-              style: { width: '500px' }
-            },
-            _react2.default.createElement(_Card.CardHeader, {
-              title: currExercise.name
-            }),
-            _react2.default.createElement(
-              _Card.CardMedia,
-              null,
-              _react2.default.createElement('img', { alt: 'no-img', src: currExercise.image })
-            ),
-            _react2.default.createElement(_Card.CardTitle, {
-              title: currExercise.name,
-              subtitle: 'Muscle group: ' + currExercise.muscles
-            }),
-            _react2.default.createElement(
-              _Card.CardText,
-              null,
-              currExercise.description
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return Display;
-}(_react.Component);
-
-Display.propTypes = {
-  exercises: _propTypes2.default.shape({
-    all: _propTypes2.default.arrayOf(_propTypes2.default.object),
-    currIndex: _propTypes2.default.number
-  }).isRequired
-};
-
-var mapStateToProps = function mapStateToProps(_ref2) {
-  var exercises = _ref2.exercises;
-  return { exercises: exercises };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Display);
-
-/***/ }),
+/* 263 */,
 /* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -46154,201 +45977,7 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 
 
 /***/ }),
-/* 289 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reselect = __webpack_require__(290);
-
-var _reactRedux = __webpack_require__(45);
-
-var _RaisedButton = __webpack_require__(291);
-
-var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
-
-var _Time = __webpack_require__(293);
-
-var _Time2 = _interopRequireDefault(_Time);
-
-var _components = __webpack_require__(72);
-
-var _action = __webpack_require__(294);
-
-var _timer = __webpack_require__(295);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Timer = function (_Component) {
-  _inherits(Timer, _Component);
-
-  function Timer() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Timer);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Timer.__proto__ || Object.getPrototypeOf(Timer)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      active: false
-    }, _this.startTimer = _this.startTimer.bind(_this), _this.handleClickToggle = _this.handleClickToggle.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(Timer, [{
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(prevProps) {
-      if (prevProps.index !== this.props.index) {
-        this.startTimer();
-      }
-    }
-  }, {
-    key: 'startTimer',
-    value: function startTimer() {
-      var timer = setInterval(runTimer.bind(this), 1000);
-
-      function runTimer() {
-        var _state = this.state,
-            time = _state.time,
-            buffer = _state.buffer,
-            setsLeft = _state.setsLeft,
-            active = _state.active;
-
-
-        if (time > 0 && active) {
-          _timer.decrementTimeByOne.call(this);
-        } else {
-          clearInterval(timer);
-          if (!active) {
-            return;
-          } else if (!buffer) {
-            _timer.startBuffer.call(this);
-          } else if (setsLeft > 0) {
-            _timer.nextSet.call(this);
-          } else {
-            _timer.nextExercise.call(this);
-          }
-        }
-      }
-    }
-  }, {
-    key: 'handleClickToggle',
-    value: function handleClickToggle() {
-      if (!this.state.active) {
-        this.setState({ active: true }, this.startTimer);
-      } else {
-        this.setState({ active: false });
-      }
-    }
-    /* eslint-enable */
-
-  }, {
-    key: 'render',
-    value: function render() {
-      var btnText = this.state.active === true ? 'pause' : 'start';
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          _components.FlexRow,
-          null,
-          _react2.default.createElement(
-            _components.FlexCol,
-            null,
-            _react2.default.createElement(
-              _components.Label,
-              null,
-              'Time:'
-            ),
-            _react2.default.createElement(_Time2.default, {
-              time: this.state.time
-            })
-          ),
-          _react2.default.createElement(
-            _components.FlexCol,
-            null,
-            _react2.default.createElement(
-              _components.Label,
-              null,
-              'Sets:'
-            ),
-            _react2.default.createElement(
-              _components.TimeWrapper,
-              null,
-              this.state.setsLeft
-            )
-          )
-        ),
-        _react2.default.createElement(_RaisedButton2.default, {
-          label: btnText,
-          primary: true,
-          onClick: this.handleClickToggle
-        })
-      );
-    }
-  }], [{
-    key: 'getDerivedStateFromProps',
-    value: function getDerivedStateFromProps(nextProps) {
-      return {
-        time: nextProps.duration,
-        setsLeft: nextProps.sets,
-        index: nextProps.index,
-        buffer: false
-      };
-    }
-  }]);
-
-  return Timer;
-}(_react.Component);
-
-Timer.propTypes = {
-  index: _propTypes2.default.number.isRequired
-};
-
-var selectExercises = function selectExercises(state) {
-  return state.exercises;
-};
-
-var mapStateToProps = (0, _reselect.createStructuredSelector)({
-  exercises: selectExercises
-});
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    updateCurrIndex: function updateCurrIndex(currIndex) {
-      dispatch((0, _action.updateCurrentExercise)(currIndex));
-    }
-  };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Timer);
-
-/***/ }),
+/* 289 */,
 /* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -47067,7 +46696,336 @@ var updateCurrentExercise = exports.updateCurrentExercise = function updateCurre
 };
 
 /***/ }),
-/* 295 */
+/* 295 */,
+/* 296 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(45);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _Card = __webpack_require__(264);
+
+var _List = __webpack_require__(275);
+
+var _components = __webpack_require__(72);
+
+var _Timer = __webpack_require__(297);
+
+var _Timer2 = _interopRequireDefault(_Timer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Display = function (_Component) {
+  _inherits(Display, _Component);
+
+  function Display() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Display);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Display.__proto__ || Object.getPrototypeOf(Display)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(Display, [{
+    key: 'render',
+    value: function render() {
+      var _props$exercises = this.props.exercises,
+          all = _props$exercises.all,
+          currIndex = _props$exercises.currIndex;
+
+      var currExercise = all[currIndex];
+
+      return _react2.default.createElement(
+        _components.FlexRow,
+        null,
+        _react2.default.createElement(
+          _List.List,
+          null,
+          all.map(function (exercise) {
+            return _react2.default.createElement(_List.ListItem, {
+              primaryText: exercise.name,
+              key: exercise.id
+            });
+          })
+        ),
+        _react2.default.createElement(
+          _components.FlexCol,
+          null,
+          _react2.default.createElement(_Timer2.default, {
+            duration: currExercise.duration,
+            sets: currExercise.sets,
+            index: currIndex
+          }),
+          _react2.default.createElement(
+            _Card.Card,
+            {
+              style: { width: '500px' }
+            },
+            _react2.default.createElement(_Card.CardHeader, {
+              title: currExercise.name
+            }),
+            _react2.default.createElement(
+              _Card.CardMedia,
+              null,
+              _react2.default.createElement('img', { alt: 'no-img', src: currExercise.image })
+            ),
+            _react2.default.createElement(_Card.CardTitle, {
+              title: currExercise.name,
+              subtitle: 'Muscle group: ' + currExercise.muscles
+            }),
+            _react2.default.createElement(
+              _Card.CardText,
+              null,
+              currExercise.description
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Display;
+}(_react.Component);
+
+Display.propTypes = {
+  exercises: _propTypes2.default.shape({
+    all: _propTypes2.default.arrayOf(_propTypes2.default.object),
+    currIndex: _propTypes2.default.number
+  }).isRequired
+};
+
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var exercises = _ref2.exercises;
+  return { exercises: exercises };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Display);
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reselect = __webpack_require__(290);
+
+var _reactRedux = __webpack_require__(45);
+
+var _RaisedButton = __webpack_require__(291);
+
+var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
+
+var _Time = __webpack_require__(293);
+
+var _Time2 = _interopRequireDefault(_Time);
+
+var _components = __webpack_require__(72);
+
+var _action = __webpack_require__(294);
+
+var _timer = __webpack_require__(298);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Timer = function (_Component) {
+  _inherits(Timer, _Component);
+
+  function Timer() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Timer);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Timer.__proto__ || Object.getPrototypeOf(Timer)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      active: false
+    }, _this.startTimer = _this.startTimer.bind(_this), _this.handleClickToggle = _this.handleClickToggle.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(Timer, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (prevProps.index !== this.props.index) {
+        this.startTimer();
+      }
+    }
+  }, {
+    key: 'startTimer',
+    value: function startTimer() {
+      var timer = setInterval(runTimer.bind(this), 1000);
+
+      function runTimer() {
+        var _state = this.state,
+            time = _state.time,
+            buffer = _state.buffer,
+            setsLeft = _state.setsLeft,
+            active = _state.active;
+
+
+        if (time > 0 && active) {
+          _timer.decrementTimeByOne.call(this);
+        } else {
+          clearInterval(timer);
+          if (!active) {
+            return;
+          } else if (!buffer) {
+            _timer.startBuffer.call(this);
+          } else if (setsLeft > 0) {
+            _timer.nextSet.call(this);
+          } else {
+            _timer.nextExercise.call(this);
+          }
+        }
+      }
+    }
+  }, {
+    key: 'handleClickToggle',
+    value: function handleClickToggle() {
+      if (!this.state.active) {
+        this.setState({ active: true }, this.startTimer);
+      } else {
+        this.setState({ active: false });
+      }
+    }
+    /* eslint-enable */
+
+  }, {
+    key: 'render',
+    value: function render() {
+      var btnText = this.state.active === true ? 'pause' : 'start';
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          _components.FlexRow,
+          null,
+          _react2.default.createElement(
+            _components.FlexCol,
+            null,
+            _react2.default.createElement(
+              _components.Label,
+              null,
+              'Time:'
+            ),
+            _react2.default.createElement(_Time2.default, {
+              time: this.state.time
+            })
+          ),
+          _react2.default.createElement(
+            _components.FlexCol,
+            null,
+            _react2.default.createElement(
+              _components.Label,
+              null,
+              'Sets:'
+            ),
+            _react2.default.createElement(
+              _components.TimeWrapper,
+              null,
+              this.state.setsLeft
+            )
+          )
+        ),
+        _react2.default.createElement(_RaisedButton2.default, {
+          label: btnText,
+          primary: true,
+          onClick: this.handleClickToggle
+        })
+      );
+    }
+  }], [{
+    key: 'getDerivedStateFromProps',
+    value: function getDerivedStateFromProps(nextProps) {
+      return {
+        time: nextProps.duration,
+        setsLeft: nextProps.sets,
+        index: nextProps.index,
+        buffer: false
+      };
+    }
+  }]);
+
+  return Timer;
+}(_react.Component);
+
+Timer.propTypes = {
+  index: _propTypes2.default.number.isRequired
+};
+
+var selectExercises = function selectExercises(state) {
+  return state.exercises;
+};
+
+var mapStateToProps = (0, _reselect.createStructuredSelector)({
+  exercises: selectExercises
+});
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    updateCurrIndex: function updateCurrIndex(currIndex) {
+      dispatch((0, _action.updateCurrentExercise)(currIndex));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Timer);
+
+/***/ }),
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47116,6 +47074,52 @@ function nextSet() {
 function startBuffer() {
   this.setState({ time: 2, buffer: true, setsLeft: this.state.setsLeft - 1 }, this.startTimer);
 }
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _MuiThemeProvider = __webpack_require__(154);
+
+var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+var _AppBar = __webpack_require__(235);
+
+var _AppBar2 = _interopRequireDefault(_AppBar);
+
+var _Display = __webpack_require__(296);
+
+var _Display2 = _interopRequireDefault(_Display);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = function App() {
+  return _react2.default.createElement(
+    _MuiThemeProvider2.default,
+    null,
+    _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(_AppBar2.default, {
+        title: 'Daily Exercises'
+      }),
+      _react2.default.createElement(_Display2.default, null)
+    )
+  );
+};
+
+exports.default = App;
 
 /***/ })
 /******/ ]);
