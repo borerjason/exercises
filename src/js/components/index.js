@@ -23,4 +23,5 @@ export const TimeWrapper = styled.div`
   font-family: 'Inconsolata', monospace;
   font-weight: 100;
   font-size: 5rem;
+  color: ${props => props.buffer ? 'orange' : 'green'}
 `;

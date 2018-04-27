@@ -2940,7 +2940,7 @@ exports.TimeWrapper = exports.Label = exports.FlexRow = exports.FlexCol = undefi
 var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  width: 100%;\n  align-items: center;\n'], ['\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  width: 100%;\n  align-items: center;\n']),
     _templateObject2 = _taggedTemplateLiteral(['\n  display: flex;\n  justify-content: flex-between;\n'], ['\n  display: flex;\n  justify-content: flex-between;\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  font-family: \'Inconsolata\', monospace;\n  font-weight: 100;\n  font-size: 2rem;\n'], ['\n  font-family: \'Inconsolata\', monospace;\n  font-weight: 100;\n  font-size: 2rem;\n']),
-    _templateObject4 = _taggedTemplateLiteral(['\n  font-family: \'Inconsolata\', monospace;\n  font-weight: 100;\n  font-size: 5rem;\n'], ['\n  font-family: \'Inconsolata\', monospace;\n  font-weight: 100;\n  font-size: 5rem;\n']);
+    _templateObject4 = _taggedTemplateLiteral(['\n  font-family: \'Inconsolata\', monospace;\n  font-weight: 100;\n  font-size: 5rem;\n  color: ', '\n'], ['\n  font-family: \'Inconsolata\', monospace;\n  font-weight: 100;\n  font-size: 5rem;\n  color: ', '\n']);
 
 var _styledComponents = __webpack_require__(283);
 
@@ -2956,7 +2956,9 @@ var FlexRow = exports.FlexRow = _styledComponents2.default.div(_templateObject2)
 
 var Label = exports.Label = _styledComponents2.default.h3(_templateObject3);
 
-var TimeWrapper = exports.TimeWrapper = _styledComponents2.default.div(_templateObject4);
+var TimeWrapper = exports.TimeWrapper = _styledComponents2.default.div(_templateObject4, function (props) {
+  return props.buffer ? 'orange' : 'green';
+});
 
 /***/ }),
 /* 73 */
@@ -46644,13 +46646,14 @@ var _components = __webpack_require__(72);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Time = function Time(_ref) {
-  var time = _ref.time;
+  var time = _ref.time,
+      buffer = _ref.buffer;
 
   var minutes = Math.floor(time / 60);
   var seconds = time % 60;
   return _react2.default.createElement(
     _components.TimeWrapper,
-    null,
+    { buffer: buffer },
     minutes,
     ':',
     seconds < 10 ? '0' : '',
@@ -46659,7 +46662,8 @@ var Time = function Time(_ref) {
 };
 
 Time.propTypes = {
-  time: _propTypes2.default.number.isRequired
+  time: _propTypes2.default.number.isRequired,
+  buffer: _propTypes2.default.bool.isRequired
 };
 exports.default = Time;
 
@@ -46891,7 +46895,8 @@ var Timer = function (_Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Timer.__proto__ || Object.getPrototypeOf(Timer)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      active: false
+      active: false,
+      time: 2
     }, _this.startTimer = _this.startTimer.bind(_this), _this.handleClickToggle = _this.handleClickToggle.bind(_this), _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -46899,7 +46904,8 @@ var Timer = function (_Component) {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
       if (prevProps.index !== this.props.index) {
-        this.startTimer();
+        this.setState({ time: 2 }, this.startTimer);
+        // this.startTimer();
       }
     }
   }, {
@@ -46921,7 +46927,7 @@ var Timer = function (_Component) {
           clearInterval(timer);
           if (!active) {
             return;
-          } else if (!buffer) {
+          } else if (!buffer && setsLeft > 0) {
             _timer.startBuffer.call(this);
           } else if (setsLeft > 0) {
             _timer.nextSet.call(this);
@@ -46946,6 +46952,15 @@ var Timer = function (_Component) {
     key: 'render',
     value: function render() {
       var btnText = this.state.active === true ? 'pause' : 'start';
+      var message = void 0;
+
+      if (this.state.buffer && this.state.setsLeft === this.props.sets) {
+        message = 'Get Ready...';
+      } else if (this.state.buffer) {
+        message = 'Switch sides or rest';
+      } else {
+        message = '';
+      }
 
       return _react2.default.createElement(
         'div',
@@ -46962,7 +46977,8 @@ var Timer = function (_Component) {
               'Time:'
             ),
             _react2.default.createElement(_Time2.default, {
-              time: this.state.time
+              time: this.state.time,
+              buffer: this.state.buffer
             })
           ),
           _react2.default.createElement(
@@ -46971,7 +46987,7 @@ var Timer = function (_Component) {
             _react2.default.createElement(
               _components.Label,
               null,
-              'Sets:'
+              'Sets Left:'
             ),
             _react2.default.createElement(
               _components.TimeWrapper,
@@ -46979,6 +46995,11 @@ var Timer = function (_Component) {
               this.state.setsLeft
             )
           )
+        ),
+        _react2.default.createElement(
+          'h3',
+          null,
+          message
         ),
         _react2.default.createElement(_RaisedButton2.default, {
           label: btnText,
@@ -46991,10 +47012,9 @@ var Timer = function (_Component) {
     key: 'getDerivedStateFromProps',
     value: function getDerivedStateFromProps(nextProps) {
       return {
-        time: nextProps.duration,
+        // time: nextProps.duration,
         setsLeft: nextProps.sets,
-        index: nextProps.index,
-        buffer: false
+        buffer: true
       };
     }
   }]);
@@ -47066,13 +47086,13 @@ function nextSet() {
 
   this.setState({
     time: duration,
-    buffer: false
-    // setsLeft: this.state.setsLeft - 1,
+    buffer: false,
+    setsLeft: this.state.setsLeft - 1
   }, this.startTimer);
 }
 
 function startBuffer() {
-  this.setState({ time: 2, buffer: true, setsLeft: this.state.setsLeft - 1 }, this.startTimer);
+  this.setState({ time: 2, buffer: true }, this.startTimer);
 }
 
 /***/ }),

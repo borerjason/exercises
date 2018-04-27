@@ -23,10 +23,10 @@ export function nextSet() {
   this.setState({
     time: duration,
     buffer: false,
-    // setsLeft: this.state.setsLeft - 1,
+    setsLeft: this.state.setsLeft - 1,
   }, this.startTimer);
 }
 
 export function startBuffer() {
-  this.setState({ time: 2, buffer: true, setsLeft: this.state.setsLeft - 1 }, this.startTimer);
+  this.setState({ time: 2, buffer: true }, this.startTimer);
 }

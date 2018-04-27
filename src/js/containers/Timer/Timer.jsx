@@ -12,20 +12,21 @@ import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from '../../ut
 class Timer extends Component {
   static getDerivedStateFromProps(nextProps) {
     return {
-      time: nextProps.duration,
+      // time: nextProps.duration,
       setsLeft: nextProps.sets,
-      index: nextProps.index,
-      buffer: false,
+      buffer: true,
     };
   }
 
   state = {
     active: false,
+    time: 2,
   };
 
   componentDidUpdate(prevProps) {
     if (prevProps.index !== this.props.index) {
-      this.startTimer();
+      this.setState({ time: 2 }, this.startTimer);
+      // this.startTimer();
     }
   }
 
@@ -48,7 +49,7 @@ class Timer extends Component {
       } else {
         clearInterval(timer);
         if (!active) { return; }
-        else if (!buffer) {
+        else if (!buffer && setsLeft > 0) {
           startBuffer.call(this);
         } else if (setsLeft > 0) {
           nextSet.call(this);
@@ -70,6 +71,15 @@ class Timer extends Component {
 
   render() {
     const btnText = this.state.active === true ? 'pause' : 'start';
+    let message;
+
+    if (this.state.buffer && this.state.setsLeft === this.props.sets) {
+      message = 'Get Ready...'; 
+    } else if (this.state.buffer) {
+      message = 'Switch sides or rest';
+    } else {
+      message = '';
+    }
 
     return (
       <div>
@@ -78,13 +88,15 @@ class Timer extends Component {
             <Label>Time:</Label>
             <Time
               time={this.state.time}
+              buffer={this.state.buffer}
             />
           </FlexCol>
           <FlexCol>
-            <Label>Sets:</Label>
+            <Label>Sets Left:</Label>
             <TimeWrapper>{this.state.setsLeft}</TimeWrapper>
           </FlexCol>
         </FlexRow>
+        <h3>{message}</h3>
         <RaisedButton
           label={btnText}
           primary={true}
