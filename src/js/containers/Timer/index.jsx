@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Time from '../../components/Time/Time';
+import { Label, TimeWrapper, FlexRow, FlexCol } from '../../components';
 import { updateCurrentExercise } from '../../store/app/action';
 import { decrementTimeByOne, nextExercise, nextSet, startBuffer } from './utils/timer';
 
@@ -68,14 +69,22 @@ class Timer extends Component {
   /* eslint-enable */
 
   render() {
-    console.log(this.state);
     const btnText = this.state.active === true ? 'pause' : 'start';
+
     return (
       <div>
-        <Time
-          time={this.state.time}
-        />
-        <div>Sets Left: {this.state.setsLeft}</div>
+        <FlexRow>
+          <FlexCol>
+            <Label>Time:</Label>
+            <Time
+              time={this.state.time}
+            />
+          </FlexCol>
+          <FlexCol>
+            <Label>Sets:</Label>
+            <TimeWrapper>{this.state.setsLeft}</TimeWrapper>
+          </FlexCol>
+        </FlexRow>
         <RaisedButton
           label={btnText}
           primary={true}

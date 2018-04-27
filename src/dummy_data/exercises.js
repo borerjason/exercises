@@ -1,5 +1,6 @@
 module.exports = [
   {
+    id: 1,
     name: 'Lunge Stretch',
     description: 'Make sure that you’re moving at the hips and not the lower back. Squeeze the heck out of your butt of the leg that’s behind you. To enhance this stretch, raise the hand of the stretched hip to the ceiling. If you can\'t "feel" your butt contracting, try tapping it with your fingers or squeezing it.',
     muscles: 'hips',
@@ -10,6 +11,7 @@ module.exports = [
     duration: 3,
   },
   {
+    id: 2,
     name: 'quadruped hip extension',
     description: 'Get on all fours, maintain neutral spine, Raise legs up until upper leg is parallel to floor.',
     muscles: 'hips',
@@ -20,6 +22,7 @@ module.exports = [
     duration: 3,
   },
   {
+    id: 3,
     name: 'Glute Bridge',
     description: 'This is a desription about the glute bridge. Make sure that you’re moving at the hips and not the lower back.',
     muscles: 'glutes',
@@ -30,6 +33,7 @@ module.exports = [
     duration: 5,
   },
   {
+    id: 4,
     name: 'Cat & Camel',
     description: 'Round back, head up and navel to ground on inhale, round back navel to sky on exhale',
     muscles: 'core',
@@ -40,6 +44,7 @@ module.exports = [
     duration: 60,
   },
   {
+    id: 5,
     name: 'Plank',
     description: 'Your posture should be perfect and your knees should have a very slight bend in them. You abs should be tight with a slight arch in the lower back and the butt should be squeezed. Imagine you have a coin between your cheeks and it should not drop. Squeeze the butt hard and that’s 50% of your problems solved right there. I cannot stress the importance of torso stability enough.',
     muscles: 'core',
@@ -54,6 +59,7 @@ module.exports = [
 
 /*
 {
+  id: Number
   name: String Name of exercise:
   muscles: String: target muscle
   description: String: description

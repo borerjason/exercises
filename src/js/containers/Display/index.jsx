@@ -20,7 +20,7 @@ class Display extends Component {
           {all.map(exercise => (
             <ListItem
               primaryText={exercise.name}
-              key={Math.random()}
+              key={exercise.id}
             />
           ))}
         </List>
