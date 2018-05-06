@@ -20,13 +20,12 @@ class Timer extends Component {
 
   state = {
     active: false,
-    time: 2,
+    time: 5,
   };
 
   componentDidUpdate(prevProps) {
     if (prevProps.index !== this.props.index) {
-      this.setState({ time: 2 }, this.startTimer);
-      // this.startTimer();
+      this.setState({ time: 10 }, this.startTimer);
     }
   }
 
@@ -34,8 +33,6 @@ class Timer extends Component {
   handleClickToggle = this.handleClickToggle.bind(this);
 
   startTimer() {
-    const timer = setInterval(runTimer.bind(this), 1000);
-
     function runTimer() {
       const {
         time,
@@ -43,7 +40,7 @@ class Timer extends Component {
         setsLeft,
         active,
       } = this.state;
-
+      
       if (time > 0 && active) {
         decrementTimeByOne.call(this);
       } else {
@@ -58,6 +55,8 @@ class Timer extends Component {
         }
       }
     }
+
+    const timer = setInterval(runTimer.bind(this), 1000);
   }
 
   handleClickToggle() {
@@ -74,7 +73,7 @@ class Timer extends Component {
     let message;
 
     if (this.state.buffer && this.state.setsLeft === this.props.sets) {
-      message = 'Get Ready...'; 
+      message = 'Get Ready...';
     } else if (this.state.buffer) {
       message = 'Switch sides or rest';
     } else {

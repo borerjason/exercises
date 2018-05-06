@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Card, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import { List, ListItem } from 'material-ui/List';
 import { FlexCol, FlexRow } from '../../components';
+import CurrentExerciseSelector from '../../store/app/selectors';
 
 import Timer from '../Timer/Timer';
 
@@ -11,41 +12,32 @@ class Display extends Component {
   state = {};
 
   render() {
-    const { exercises: { all, currIndex } } = this.props;
-    const currExercise = all[currIndex];
+    const {
+      exercises: { all, currIndex },
+      currentExercise,
+    } = this.props;
 
     return (
       <FlexRow>
         <List>
-          {all.map(exercise => (
-            <ListItem
-              primaryText={exercise.name}
-              key={exercise.id}
-            />
-          ))}
+          {all.map(exercise => <ListItem primaryText={exercise.name} key={exercise.id} />)}
         </List>
         <FlexCol>
           <Timer
-            duration={currExercise.duration}
-            sets={currExercise.sets}
+            duration={currentExercise.duration}
+            sets={currentExercise.sets}
             index={currIndex}
           />
-          <Card
-            style={{ width: '500px' }}
-          >
-            <CardHeader
-              title={currExercise.name}
-            />
+          <Card style={{ width: '500px' }}>
+            <CardHeader title={currentExercise.name} />
             <CardMedia>
-              <img alt="no-img" src={currExercise.image} />
+              <img alt="no-img" src={currentExercise.image} />
             </CardMedia>
             <CardTitle
-              title={currExercise.name}
-              subtitle={`Muscle group: ${currExercise.muscles}`}
+              title={currentExercise.name}
+              subtitle={`Muscle group: ${currentExercise.muscles}`}
             />
-            <CardText>
-              {currExercise.description}
-            </CardText>
+            <CardText>{currentExercise.description}</CardText>
           </Card>
         </FlexCol>
       </FlexRow>
@@ -58,8 +50,12 @@ Display.propTypes = {
     all: PropTypes.arrayOf(PropTypes.object),
     currIndex: PropTypes.number,
   }).isRequired,
+  currentExercise: PropTypes.shape.isRequired,
 };
 
-const mapStateToProps = ({ exercises }) => ({ exercises });
+const mapStateToProps = state => ({
+  exercises: state.exercises,
+  currentExercise: CurrentExerciseSelector(state),
+});
 
 export default connect(mapStateToProps)(Display);

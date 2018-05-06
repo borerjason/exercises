@@ -28,5 +28,5 @@ export function nextSet() {
 }
 
 export function startBuffer() {
-  this.setState({ time: 2, buffer: true }, this.startTimer);
+  this.setState({ time: 10, buffer: true }, this.startTimer);
 }
